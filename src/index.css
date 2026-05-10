@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.cdnfonts.com/css/peace-sans');
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Peace Sans", sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  --color-sand: #f0ddbe;
+  --color-sand-dark: #e6d0ac;
+  --color-honey: #7e7f61;
+  --color-ocean: #60483e;
+  --color-ocean-dark: #60483e;
+  --color-sage: #7e7f61;
+  --color-charcoal: #60483e;
+  --color-white: #f0ddbe;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-sand);
+  color: var(--color-charcoal);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: transparent;
+}
+
+::-moz-selection {
+  background: transparent;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
