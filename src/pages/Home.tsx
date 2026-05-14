@@ -104,7 +104,7 @@ export function Home() {
                   <img
                     src={retreat.img}
                     alt={retreat.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    className="w-full h-full object-cover"
                     referrerPolicy="no-referrer"
                   />
                 </div>

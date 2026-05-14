@@ -66,14 +66,11 @@ function ImageCarousel({ images }: { images: string[] }) {
 
 export function Experience() {
   const villaImages = [
-    "/mainsoul.jpeg", "/0soul.jpeg", "/1soul.jpeg", "/2soul.jpeg", "/4soul.jpeg", 
-    "/5soul.jpeg", "/6soul.jpeg", "/7soul.jpeg",
-    "/main1.jpg", "/main2.jpg", "/main5.jpg", "/main6.jpg", "/main7.jpg", 
-    "/main8.jpg", "/main9.jpg", "/main10.jpg", "/main11.jpg", "/main12.jpg", 
-    "/main13.jpg", "/main14.jpg", "/main15.jpg", "/main16.jpg"
+    "/main1.jpg", "/main16.jpg", "/main15.jpg", "/main2.jpg", "/main5.jpg", "/main6.jpg", 
+    "/main7.jpg", "/main8.jpg", "/main9.jpg", "/main10.jpg", "/main11.jpg", "/main12.jpg"
   ];
   const lodgeImages = [
-    "/stora1.jpg", "/stora0.jpg", "/stora2.jpg", "/stora3.jpg", "/stora4.png", "/stora5.jpeg", 
+    "/stora1.jpg", "/stora0.jpg", "/stora3.jpg", "/stora4.png", "/stora5.jpeg", 
     "/stora6.jpeg", "/stora7.jpg", "/stora10.jpg"
   ];
 
