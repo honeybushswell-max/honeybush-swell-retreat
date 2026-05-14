@@ -219,7 +219,7 @@ export function Experience() {
             </div>
           </div>
 
-          <div className="text-center mt-8 pb-0">
+          <div className="text-center mt-8 mb-16">
             <p className="text-xl font-serif text-ocean-dark italic">
               And most importantly: lasting friendships, soul-deep connections, and an unforgettable adventure
             </p>
@@ -339,7 +339,7 @@ export function Experience() {
         <div className="text-center">
           <h2 className="text-3xl font-serif text-ocean-dark mb-8">Ready to join us?</h2>
           <Link to="/dates">
-            <Button size="lg" className="bg-honey text-ocean-dark hover:bg-white uppercase tracking-widest text-sm">
+            <Button size="lg" className="bg-ocean-dark text-sand hover:bg-honey transition-colors uppercase tracking-widest text-sm">
               View Dates & Pricing
             </Button>
           </Link>
