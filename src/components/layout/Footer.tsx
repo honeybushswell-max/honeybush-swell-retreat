@@ -42,7 +42,10 @@ export function Footer() {
           <p className="text-sand/70 text-sm mb-4 font-light">
             Join our waitlist for early access to new retreat dates and mindful inspiration.
           </p>
-          <form className="flex flex-col space-y-2" onSubmit={(e) => e.preventDefault()}>
+          <form className="flex flex-col space-y-2"
+  action="https://formspree.io/f/mkoyljqb"
+  method="POST" 
+  >
             <input
               type="email"
               placeholder="Your email address"

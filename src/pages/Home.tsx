@@ -9,7 +9,7 @@ export function Home() {
       <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
-            src="hero_main.jpg"
+            src="hero2.jpg"
             alt="Women surfers on the beach"
             className="w-full h-full object-cover"
             referrerPolicy="no-referrer"
@@ -89,14 +89,14 @@ export function Home() {
               {
                 title: "Lapland, Sweden",
                 date: "August 2026",
-                desc: "A soul-deep immersion into the raw silence of the North - the last true wilderness. Beneath the northern lights, experience serene lake dips, warming saunas, wild adventures, and grounding rituals in the heart of Swedish Lapland.",
-                img: "lapland.jpeg"
+                desc: "A soul-deep immersion into the raw silence of the North - the last true wilderness. Beneath the northern lights, experience warming saunas, wild adventures, and grounding rituals in the heart of Swedish Lapland.",
+                img: "tea2.png"
               },
               {
                 title: "Cape Town, South Africa",
                 date: "November 2026",
                 desc: "Our signature surf and soul experience - crystal waters, golden light, nourishing community meals, and the majestic energy of the Cape mountains blending seamlessly with the ocean.",
-                img: "cape.jpg"
+                img: "beach.jpeg"
               }
             ].map((retreat, idx) => (
               <div key={idx} className="flex flex-col group items-center">
@@ -216,39 +216,27 @@ export function Home() {
             <h2 className="text-4xl font-serif text-ocean-dark">The Stories Within</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            <div className="bg-sand-dark p-10 rounded-sm relative">
+            <div className="bg-sand-dark p-10 rounded-sm relative flex flex-col">
               <span className="text-6xl font-serif text-honey/30 absolute top-4 left-6">"</span>
-              <p className="relative z-10 text-charcoal/80 font-light italic leading-relaxed mb-6 mt-4">
-                I arrived feeling completely depleted and terrified of the ocean. I left feeling stronger than I have in years, with a new passion for surfing and friends I still talk to daily. It wasn't just a retreat; it was a turning point.
+              <p className="relative z-10 text-charcoal/80 font-light italic leading-relaxed mb-6 mt-4 flex-grow">
+                I didn't know how much I needed this trip until I went on it. Honeybush Swell created a getaway with the perfect mix of planned activities and free time. Just after 2 days I felt like I've been there for weeks. If you are looking to recharge with delightful company, nourishing food and activities to expand your horizon, I would definitely recommend booking a trip with Honeybush Swell.
               </p>
-              <div className="flex items-center gap-4">
-                <img
-                  src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=150&auto=format&fit=crop"
-                  alt="Sarah"
-                  className="w-12 h-12 rounded-full object-cover"
-                  referrerPolicy="no-referrer"
-                />
+              <div className="flex items-center gap-4 mt-auto">
                 <div>
-                  <p className="font-medium text-ocean-dark text-sm uppercase tracking-wide">Sarah M.</p>
-                  <p className="text-xs text-charcoal/50">London, UK</p>
+                  <p className="font-medium text-ocean-dark text-sm uppercase tracking-wide">Manon</p>
+                  <p className="text-xs text-charcoal/50">Netherlands</p>
                 </div>
               </div>
             </div>
-            <div className="bg-sand-dark p-10 rounded-sm relative">
+            <div className="bg-sand-dark p-10 rounded-sm relative flex flex-col">
               <span className="text-6xl font-serif text-honey/30 absolute top-4 left-6">"</span>
-              <p className="relative z-10 text-charcoal/80 font-light italic leading-relaxed mb-6 mt-4">
-                The perfect balance of activity and deep rest. The coaching was phenomenal—they really understand how women learn differently in the water. The food, the villa, the conversations... pure magic.
+              <p className="relative z-10 text-charcoal/80 font-light italic leading-relaxed mb-6 mt-4 flex-grow">
+                The perfect mix of adventure and slowing down. Mornings in the water, long sunsets, amazing food, and the kind of conversations that stay with you long after the trip ends. The villa was beautiful, the activities were so much fun, and the whole experience just felt so special.
               </p>
-              <div className="flex items-center gap-4">
-                <img
-                  src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=150&auto=format&fit=crop"
-                  alt="Elena"
-                  className="w-12 h-12 rounded-full object-cover"
-                  referrerPolicy="no-referrer"
-                />
+              <div className="flex items-center gap-4 mt-auto">
                 <div>
-                  <p className="font-medium text-ocean-dark text-sm uppercase tracking-wide">Elena V.</p>
-                  <p className="text-xs text-charcoal/50">Berlin, Germany</p>
+                  <p className="font-medium text-ocean-dark text-sm uppercase tracking-wide">Lory</p>
+                  <p className="text-xs text-charcoal/50">Austria</p>
                 </div>
               </div>
             </div>

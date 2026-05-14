@@ -66,13 +66,15 @@ function ImageCarousel({ images }: { images: string[] }) {
 
 export function Experience() {
   const villaImages = [
+    "/mainsoul.jpeg", "/0soul.jpeg", "/1soul.jpeg", "/2soul.jpeg", "/4soul.jpeg", 
+    "/5soul.jpeg", "/6soul.jpeg", "/7soul.jpeg",
     "/main1.jpg", "/main2.jpg", "/main5.jpg", "/main6.jpg", "/main7.jpg", 
     "/main8.jpg", "/main9.jpg", "/main10.jpg", "/main11.jpg", "/main12.jpg", 
     "/main13.jpg", "/main14.jpg", "/main15.jpg", "/main16.jpg"
   ];
   const lodgeImages = [
-    "/stora0.jpg", "/stora2.jpg", "/stora3.jpg", "/stora4.png", "/stora5.jpeg", 
-    "/stora6.jpeg", "/stora7.jpg", "/stora8.jpg", "/stora9.jpg", "/stora10.jpg"
+    "/stora1.jpg", "/stora0.jpg", "/stora2.jpg", "/stora3.jpg", "/stora4.png", "/stora5.jpeg", 
+    "/stora6.jpeg", "/stora7.jpg", "/stora10.jpg"
   ];
 
   return (
@@ -99,7 +101,7 @@ export function Experience() {
         </div>
 
         {/* The Details */}
-        <div className="mb-32">
+        <div className="mb-0">
           <div className="text-center mb-16">
             <span className="text-honey uppercase tracking-widest text-sm font-medium">The Details</span>
             <h2 className="text-4xl font-serif text-ocean-dark mt-4">Our Retreats</h2>
@@ -152,7 +154,7 @@ export function Experience() {
                     </li>
                     <li className="flex items-start gap-3">
                       <span className="text-honey mt-1">✦</span>
-                      <span>Airport transfers from Gällivare Airport or Gällivare train station (bus departure at 3:10pm)</span>
+                      <span>Airport transfers from Gällivare Airport or Gällivare train station</span>
                     </li>
                   </ul>
                 </div>
@@ -193,7 +195,7 @@ export function Experience() {
                     </li>
                     <li className="flex items-start gap-3">
                       <span className="text-honey mt-1">✦</span>
-                      <span>All nourishing, chef-prepared meals (breakfast & dinner, excluding weekend explorations)</span>
+                      <span>All nourishing, chef-prepared meals (daily breakfasts and dinners except during our weekend outings)</span>
                     </li>
                     <li className="flex items-start gap-3">
                       <span className="text-honey mt-1">✦</span>
@@ -217,7 +219,7 @@ export function Experience() {
             </div>
           </div>
 
-          <div className="text-center mt-16 pb-16">
+          <div className="text-center mt-8 pb-0">
             <p className="text-xl font-serif text-ocean-dark italic">
               And most importantly: lasting friendships, soul-deep connections, and an unforgettable adventure
             </p>

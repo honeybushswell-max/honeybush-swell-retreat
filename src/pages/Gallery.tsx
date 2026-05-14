@@ -3,13 +3,41 @@ import { useState, useEffect, useCallback } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const carousel1 = [
+  "/mainsoul.jpeg",
+  "/0soul.jpeg",
+  "/1soul.jpeg",
+  "/2soul.jpeg",
+  "/4soul.jpeg",
+  "/5soul.jpeg",
+  "/6soul.jpeg",
+  "/7soul.jpeg",
   "/surf1.jpg",
   "/surf2.jpg",
+  "/surf3.jpg",
+  "/surf4.jpg",
+  "/surf5.jpg",
+  "/surf6.jpg",
+  "/surf7.jpg",
+  "/surf8.jpg",
+  "/surf9.jpg",
+  "/surf10.jpg",
+  "/surf11.jpg",
+  "/surf14.jpg",
 ];
 
 const carousel2 = [
+  "/hike1.jpeg",
+  "/hike2.jpeg",
+  "/stora10.jpg",
+  "/stora3.jpg",
+  "/stora5.jpeg",
+  "/stora6.jpeg",
+  "/stora7.jpg",
+  "/stora1.jpg",
+  "/hike3.JPG",
+  "/hike4.JPG",
+  "/hike5.JPG",
   "/stora0.jpg",
-  "/stora8.jpg",
 ];
 
 function FullScreenCarousel({ images, title }: { images: string[], title?: string }) {

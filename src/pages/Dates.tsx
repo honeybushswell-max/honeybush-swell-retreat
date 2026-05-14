@@ -69,7 +69,7 @@ export function Dates() {
             <p className="text-sand text-xl font-light mt-4 italic">Lapland, Sweden</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            <div className="border border-sand/20 p-8 rounded-sm">
+            <div className="border border-sand/20 p-8 rounded-sm flex flex-col">
               <h3 className="text-2xl font-serif text-honey mb-2">Shared Room</h3>
               <p className="text-3xl font-light mb-6">999 EUR</p>
               <p className="font-light text-sand/80 leading-relaxed mb-8">
@@ -79,13 +79,13 @@ export function Dates() {
                 <li className="flex items-center gap-2"><span className="text-honey">✓</span> All retreat inclusions</li>
                 <li className="flex items-center gap-2"><span className="text-honey">✓</span> Shared bathroom</li>
               </ul>
-              <Link to="/contact">
+              <Link to="/contact" className="mt-auto">
                 <Button className="w-full bg-honey text-ocean-dark hover:bg-white uppercase tracking-widest text-xs">
                   Select Shared
                 </Button>
               </Link>
             </div>
-            <div className="border border-sand/20 p-8 rounded-sm relative overflow-hidden">
+            <div className="border border-sand/20 p-8 rounded-sm relative overflow-hidden flex flex-col">
               <h3 className="text-2xl font-serif text-honey mb-2">Private Room</h3>
               <p className="text-3xl font-light mb-6">1109 EUR</p>
               <p className="font-light text-sand/80 leading-relaxed mb-8">
@@ -95,12 +95,22 @@ export function Dates() {
                 <li className="flex items-center gap-2"><span className="text-honey">✓</span> All retreat inclusions</li>
                 <li className="flex items-center gap-2"><span className="text-honey">✓</span> Private en-suite bathroom</li>
               </ul>
-              <Link to="/contact">
+              <Link to="/contact" className="mt-auto">
                 <Button className="w-full bg-honey text-ocean-dark hover:bg-white uppercase tracking-widest text-xs">
                   Select Private
                 </Button>
               </Link>
             </div>
+          </div>
+        </div>
+
+        {/* Pricing Cape Town */}
+        <div className="bg-ocean-dark text-sand p-12 md:p-24 rounded-sm mb-16">
+          <div className="text-center">
+            <span className="text-honey uppercase tracking-widest text-sm font-medium">Investment</span>
+            <h2 className="text-4xl font-serif text-sand mt-4">Retreat Packages</h2>
+            <p className="text-sand text-xl font-light mt-4 italic">Cape Town, South Africa — Coming soon</p>
+            <p className="text-honey text-2xl font-light mt-6">prices from 1500 EUR</p>
           </div>
         </div>
 
