@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Instagram, Mail } from 'lucide-react';
+import { Instagram, Mail, Phone } from 'lucide-react';
 
 export function Footer() {
   return (
@@ -22,6 +22,9 @@ export function Footer() {
             </a>
             <a href="mailto:honeybushswell@gmail.com" className="text-sand/70 hover:text-honey transition-colors">
               <Mail size={20} />
+            </a>
+            <a href="tel:+27619244311" className="text-sand/70 hover:text-honey transition-colors">
+              <Phone size={20} />
             </a>
           </div>
         </div>

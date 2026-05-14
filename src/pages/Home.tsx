@@ -210,7 +210,7 @@ export function Home() {
     </section>
 
       {/* Social Proof */}
-      <section className="py-24 bg-sand px-6">
+      <section className="pt-24 pb-12 bg-sand px-6">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-serif text-ocean-dark">The Stories Within</h2>
@@ -244,8 +244,28 @@ export function Home() {
         </div>
       </section>
 
+      {/* Our Partners */}
+      <section className="pt-12 pb-8 bg-sand border-t border-sand-dark/30 px-6">
+        <div className="max-w-3xl mx-auto">
+          <div className="text-center mb-8">
+            <h2 className="text-4xl font-serif text-ocean-dark">Our Partners</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-x-0 md:gap-y-0 items-center justify-items-center">
+            {["2.png", "3.png", "4.png", "5.png", "6.png", "7.png"].map((logo, idx) => (
+              <img 
+                key={idx} 
+                src={logo} 
+                alt="Partner Logo" 
+                className="h-24 md:h-48 w-auto object-contain"
+                referrerPolicy="no-referrer"
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
-      <section className="py-32 bg-ocean relative overflow-hidden flex items-center justify-center text-center px-6">
+      <section className="pt-8 pb-32 bg-ocean relative overflow-hidden flex items-center justify-center text-center px-6">
         <div className="absolute inset-0 z-0 opacity-20">
           <img
             src="youare.jpeg"
