@@ -245,22 +245,40 @@ export function Home() {
       </section>
 
       {/* Our Partners */}
-      <section className="pt-12 pb-8 bg-sand border-t border-sand-dark/30 px-6">
-        <div className="max-w-3xl mx-auto">
-          <div className="text-center mb-8">
+      <section className="pt-16 pb-12 bg-sand border-t border-sand-dark/30 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6 mb-12">
+          <div className="text-center">
             <h2 className="text-4xl font-serif text-ocean-dark">Our Partners</h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-x-0 md:gap-y-0 items-center justify-items-center">
-            {["2.png", "3.png", "4.png", "5.png", "6.png", "7.png"].map((logo, idx) => (
-              <img 
-                key={idx} 
-                src={logo} 
-                alt="Partner Logo" 
-                className="h-24 md:h-48 w-auto object-contain"
-                referrerPolicy="no-referrer"
-              />
-            ))}
-          </div>
+        </div>
+        
+        <div className="relative flex">
+          {/* Gradient Masks */}
+          <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-sand to-transparent z-10 hidden md:block"></div>
+          <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-sand to-transparent z-10 hidden md:block"></div>
+          
+          <motion.div 
+            className="flex items-center gap-24 md:gap-48 whitespace-nowrap"
+            animate={{ x: ["0%", "-50%"] }}
+            transition={{
+              duration: 40,
+              ease: "linear",
+              repeat: Infinity,
+            }}
+          >
+            {/* Flat list for perfectly even spacing */}
+            {[...Array(2)].map((_, i) => (
+              ["2.png", "3.png", "4.png", "5.png", "6.png", "7.png"].map((logo, idx) => (
+                <img 
+                  key={`${i}-${idx}`} 
+                  src={logo} 
+                  alt="Partner Logo" 
+                  className="h-20 md:h-24 w-auto object-contain flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300"
+                  referrerPolicy="no-referrer"
+                />
+              ))
+            )).flat()}
+          </motion.div>
         </div>
       </section>
 
