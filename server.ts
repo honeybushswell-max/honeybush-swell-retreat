@@ -38,7 +38,7 @@ app.post("/api/create-checkout-session", async (req, res) => {
 
     const stripe = new Stripe(stripeKey);
 
-    const roomPriceNum = roomType === "shared" ? 99900 : 110900;
+    const roomPriceNum = roomType === "shared" ? 100 : 100;
 
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
@@ -68,59 +68,11 @@ app.post("/api/create-checkout-session", async (req, res) => {
       message: err.message
     });
   }
-
-  try {
-    // Lazy initialize Stripe as instructed by developer guidelines
-    const stripe = new Stripe(stripeKey);
-
-    const host = req.headers.host || "localhost:3000";
-    const protocol = req.headers["x-forwarded-proto"] || "http";
-    const successUrl = `${protocol}://${host}/book?session_id={CHECKOUT_SESSION_ID}&room=${roomType}&firstName=${encodeURIComponent(firstName || "")}&lastName=${encodeURIComponent(lastName || "")}&email=${encodeURIComponent(email || "")}`;
-    const cancelUrl = `${protocol}://${host}/book?room=${roomType}`;
-
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ["card"],
-      line_items: [
-        {
-          price_data: {
-            currency: "eur",
-            product_data: {
-              name: `Honeybush Swell Retreat: ${roomName}`,
-              description: `Lapland, Sweden (August 26 - 30, 2026). Included: 4 nights cozy lodge, daily hikes, chef-prepared meals, saunas, yoga, breathwork, Sami culture & transfers. Securing place for 1 of maximum 7 women.`,
-              images: ["https://images.unsplash.com/photo-1548138014-ab743475c8cc?q=80&w=1200&auto=format&fit=crop"],
-            },
-            unit_amount: roomPriceNum * 100, // Stripe expects amount in cents
-          },
-          quantity: 1,
-        },
-      ],
-      mode: "payment",
-      customer_email: email,
-      metadata: {
-        firstName,
-        lastName,
-        phone,
-        location,
-        age,
-        hikingExp,
-        dietary,
-        message,
-        roomType,
-      },
-      success_url: successUrl,
-      cancel_url: cancelUrl,
-    });
-
-    return res.json({ url: session.url });
-  } catch (error: any) {
-    console.error("Stripe error:", error);
-    return res.status(500).json({ error: error.message || "An error occurred creating Stripe session" });
-  }
 });
 
 // Vite middleware integration
 async function startServer() {
-  const isDev = process.env.NODE_ENV !== "production" && !process.argv[1]?.endsWith("server.cjs");
+  const isDev = process.env.NODE_ENV !== "production";
 
   if (isDev) {
     const { createServer } = await eval('import("vite")');
