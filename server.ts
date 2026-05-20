@@ -12,32 +12,60 @@ app.use(express.json());
 
 // API route first
 app.post("/api/create-checkout-session", async (req, res) => {
-  const { roomType, firstName, lastName, email, phone, location, age, hikingExp, dietary, message } = req.body;
+  try {
+    const {
+      roomType,
+      firstName,
+      lastName,
+      email,
+      phone,
+      location,
+      age,
+      hikingExp,
+      dietary,
+      message
+    } = req.body;
 
-  // Let's validate the roomType
-  if (roomType !== "shared" && roomType !== "private") {
-    return res.status(400).json({ error: "Invalid accommodation option selected" });
-  }
+    if (roomType !== "shared" && roomType !== "private") {
+      return res.status(400).json({ error: "Invalid room type" });
+    }
 
-  const roomPriceNum = roomType === "shared" ? 999 : 1109;
-  const roomName = roomType === "shared" ? "Shared Room - Lapland, Sweden" : "Private Room - Lapland, Sweden";
+    const stripeKey = process.env.STRIPE_SECRET_KEY;
 
-  const stripeKey = process.env.STRIPE_SECRET_KEY;
+    if (!stripeKey) {
+      return res.status(400).json({ error: "Missing Stripe key" });
+    }
 
-  if (!stripeKey) {
-    // If STRIPE_SECRET_KEY is missing, we handle it gracefully with a sandbox fallback URL!
-    // This allows the user to see how the app works even prior to entering their credit card or API keys.
-    console.warn("STRIPE_SECRET_KEY environment variable is not defined. Falling back to sandbox demo mode.");
-    
-    // We direct back to the client-side success page with a mock session_id so that the UI can instantly display a pristine success message!
-    const host = req.headers.host || "localhost:3000";
-    const protocol = req.headers["x-forwarded-proto"] || "http";
-    const successUrl = `${protocol}://${host}/book?session_id=mock_session_${Date.now()}&room=${roomType}&firstName=${encodeURIComponent(firstName || "")}&lastName=${encodeURIComponent(lastName || "")}&email=${encodeURIComponent(email || "")}`;
-    
-    return res.json({ 
-      url: successUrl,
-      sandbox: true,
-      message: "Please define STRIPE_SECRET_KEY in settings to process real credit card payments."
+    const stripe = new Stripe(stripeKey);
+
+    const roomPriceNum = roomType === "shared" ? 99900 : 110900;
+
+    const session = await stripe.checkout.sessions.create({
+      mode: "payment",
+      payment_method_types: ["card"],
+      line_items: [
+        {
+          price_data: {
+            currency: "usd",
+            product_data: {
+              name: roomType === "shared" ? "Shared Room" : "Private Room",
+            },
+            unit_amount: roomPriceNum,
+          },
+          quantity: 1,
+        },
+      ],
+      success_url: `http://localhost:3000/book?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `http://localhost:3000/book`,
+    });
+
+    return res.json({ url: session.url });
+
+  } catch (err) {
+    console.error("Stripe error:", err);
+    return res.status(500).json({
+      error: "Checkout failed",
+      message: err.message
     });
   }
 
