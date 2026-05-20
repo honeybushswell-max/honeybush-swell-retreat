@@ -1,5 +1,6 @@
 {
   "name": "Honeybush Swell",
   "description": "A luxury, soulful, conversion-focused website for a women's surf and wellness retreat in Cape Town.",
-  "requestFramePermissions": []
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

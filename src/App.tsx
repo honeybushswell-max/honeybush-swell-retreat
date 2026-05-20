@@ -12,6 +12,7 @@ import { Dates } from './pages/Dates';
 import { Gallery } from './pages/Gallery';
 import { FAQ } from './pages/FAQ';
 import { Contact } from './pages/Contact';
+import { Book } from './pages/Book';
 import { Terms } from './pages/Terms';
 import { Privacy } from './pages/Privacy';
 
@@ -27,6 +28,7 @@ export default function App() {
           <Route path="gallery" element={<Gallery />} />
           <Route path="faq" element={<FAQ />} />
           <Route path="contact" element={<Contact />} />
+          <Route path="book" element={<Book />} />
           <Route path="terms" element={<Terms />} />
           <Route path="privacy" element={<Privacy />} />
         </Route>

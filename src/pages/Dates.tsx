@@ -34,12 +34,14 @@ export function Dates() {
               date: "August 26 - 30, 2026",
               status: "Open",
               spots: 10,
+              type: "book"
             },
             {
               location: "Cape Town, SA",
-              date: "November, 2026",
+              date: "November 18-26, 2026",
               status: "Open",
               spots: 10,
+              type: "apply"
             }
           ].map((retreat, idx) => (
             <div key={idx} className="bg-sand-dark p-8 rounded-sm border border-sand-dark hover:border-honey/50 transition-colors">
@@ -48,13 +50,13 @@ export function Dates() {
               <p className="text-sm uppercase tracking-widest font-medium mb-6" style={{ color: retreat.spots === 0 ? 'var(--color-sage)' : 'var(--color-honey)' }}>
                 {retreat.status}
               </p>
-              <Link to={retreat.spots === 0 ? "/contact" : "/contact?date=" + encodeURIComponent(retreat.date)}>
+              <Link to={retreat.spots === 0 ? "/contact" : (retreat.type === "book" ? "/book" : "/contact?date=" + encodeURIComponent(retreat.date))}>
                 <Button
                   variant={retreat.spots === 0 ? "outline" : "default"}
                   className="w-full uppercase tracking-widest text-xs"
                   disabled={retreat.spots === 0}
                 >
-                  {retreat.spots === 0 ? "Join Waitlist" : "Apply Now"}
+                  {retreat.spots === 0 ? "Join Waitlist" : (retreat.type === "book" ? "Book Now" : "Apply Now")}
                 </Button>
               </Link>
             </div>
@@ -79,7 +81,7 @@ export function Dates() {
                 <li className="flex items-center gap-2"><span className="text-honey">✓</span> All retreat inclusions</li>
                 <li className="flex items-center gap-2"><span className="text-honey">✓</span> Shared bathroom</li>
               </ul>
-              <Link to="/contact" className="mt-auto">
+              <Link to="/book?room=shared" className="mt-auto">
                 <Button className="w-full bg-honey text-ocean-dark hover:bg-white uppercase tracking-widest text-xs">
                   Select Shared
                 </Button>
@@ -95,7 +97,7 @@ export function Dates() {
                 <li className="flex items-center gap-2"><span className="text-honey">✓</span> All retreat inclusions</li>
                 <li className="flex items-center gap-2"><span className="text-honey">✓</span> Private en-suite bathroom</li>
               </ul>
-              <Link to="/contact" className="mt-auto">
+              <Link to="/book?room=private" className="mt-auto">
                 <Button className="w-full bg-honey text-ocean-dark hover:bg-white uppercase tracking-widest text-xs">
                   Select Private
                 </Button>

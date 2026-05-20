@@ -32,7 +32,7 @@ export function Home() {
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
             className="text-lg md:text-xl text-sand/90 font-light tracking-wide mb-10 uppercase"
           >
-            A women's surf & soul retreat in Cape Town and beyond
+            A women's surf, hike & soul retreat in Cape Town and beyond
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -96,7 +96,7 @@ export function Home() {
                 title: "Cape Town, South Africa",
                 date: "November 2026",
                 desc: "Our signature surf and soul experience - crystal waters, golden light, nourishing community meals, and the majestic energy of the Cape mountains blending seamlessly with the ocean.",
-                img: "beach.jpeg"
+                img: "lunch1.jpg"
               }
             ].map((retreat, idx) => (
               <div key={idx} className="flex flex-col group items-center">
@@ -231,12 +231,12 @@ export function Home() {
             <div className="bg-sand-dark p-10 rounded-sm relative flex flex-col">
               <span className="text-6xl font-serif text-honey/30 absolute top-4 left-6">"</span>
               <p className="relative z-10 text-charcoal/80 font-light italic leading-relaxed mb-6 mt-4 flex-grow">
-                The perfect mix of adventure and slowing down. Mornings in the water, long sunsets, amazing food, and the kind of conversations that stay with you long after the trip ends. The villa was beautiful, the activities were so much fun, and the whole experience just felt so special.
+                This was a once-in-a-lifetime kind of getaway in the most beautiful seaside villa in Cape Town. Every detail from the meals to the activities - was so thoughtfully curated. I learnt to surf thanks to Honeybush Swell and felt so supported and inspired surrounded by the most incredible sisterhood. Don’t think twice
               </p>
               <div className="flex items-center gap-4 mt-auto">
                 <div>
-                  <p className="font-medium text-ocean-dark text-sm uppercase tracking-wide">Lory</p>
-                  <p className="text-xs text-charcoal/50">Austria</p>
+                  <p className="font-medium text-ocean-dark text-sm uppercase tracking-wide">Gina</p>
+                  <p className="text-xs text-charcoal/50">South Africa</p>
                 </div>
               </div>
             </div>
@@ -283,7 +283,7 @@ export function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="pt-8 pb-32 bg-ocean relative overflow-hidden flex items-center justify-center text-center px-6">
+      <section className="py-32 bg-ocean relative overflow-hidden flex items-center justify-center text-center px-6">
         <div className="absolute inset-0 z-0 opacity-20">
           <img
             src="youare.jpeg"

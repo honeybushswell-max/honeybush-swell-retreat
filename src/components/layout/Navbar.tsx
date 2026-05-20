@@ -65,9 +65,9 @@ export function Navbar() {
               {link.name}
             </Link>
           ))}
-          <Link to="/contact">
-            <Button variant="default" className="uppercase tracking-widest text-xs">
-              Apply Now
+          <Link to="/book">
+            <Button className="bg-honey text-ocean-dark hover:bg-white hover:text-ocean-dark font-semibold uppercase tracking-widest text-xs px-5">
+              Book Now
             </Button>
           </Link>
         </div>
@@ -94,11 +94,13 @@ export function Navbar() {
                 {link.name}
               </Link>
             ))}
-            <Link to="/contact" className="pt-4 border-t border-sand-dark">
-              <Button className="w-full uppercase tracking-widest text-xs">
-                Apply Now
-              </Button>
-            </Link>
+            <div className="pt-4 border-t border-sand-dark flex flex-col gap-3">
+              <Link to="/book">
+                <Button className="w-full bg-honey text-ocean-dark hover:bg-white uppercase tracking-widest text-xs font-semibold">
+                  Book Now
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       )}
