@@ -25,7 +25,7 @@ export function FAQ() {
     },
     {
       question: "Are airport transfers included?",
-      answer: "Yes! We provide group transfers from Cape Town International Airport (CPT), Gällivare Airport (GEV), and Gällivare Train Station on designated arrival and departure days. All transfer details will be confirmed with you closer to the retreat.\n\nPlease note that in Gällivare there is only one scheduled pick-up time from both the airport and train station on the arrival day."
+      answer: "Yes! We provide group transfers from Cape Town International Airport (CPT), Gällivare Airport (GEV), and Gällivare Train Station on designated arrival and departure days. All transfer details will be confirmed with you closer to the retreat.\n\nPlease note that in Gällivare there is only one scheduled pick-up time from both the airport and train station on the arrival day at 2.50pm and from the lodge to the airport and train station at 10.00am on the departure day."
     },
     {
       question: "What should I bring?",

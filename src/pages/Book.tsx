@@ -503,7 +503,7 @@ export function Book() {
                         <h4 className="text-sm font-serif text-ocean-dark font-semibold">Direct Bank Transfer</h4>
                       </div>
                       <p className="text-xs text-charcoal/70 font-light leading-relaxed">
-                        To secure your spot, you will make a direct bank transfer to our European Revolut account in EUR. Official bank wire details (IBAN, BIC, Account Name) will be displayed on the screen immediately upon submitting this booking form. We will also hold your spot for up to 48 hours while your transfer is processed.
+                        To secure your spot, make a direct bank transfer to our account. Official bank wire details (IBAN, BIC, Account Name) will be displayed on the screen immediately upon submitting this booking form. We will also hold your spot for up to 48 hours while your transfer is processed. We can't wait to meet you!
                       </p>
                     </div>
                   </div>
