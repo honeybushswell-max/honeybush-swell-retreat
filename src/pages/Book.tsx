@@ -553,7 +553,15 @@ export function Book() {
                     <li className="flex items-start gap-2"><span className="text-honey text-sm flex-shrink-0">✓</span> <span>Daily yoga, breathwork & women’s circle practices</span></li>
                     <li className="flex items-start gap-2"><span className="text-honey text-sm flex-shrink-0">✓</span> <span>Northern Lights chasing</span></li>
                     <li className="flex items-start gap-2"><span className="text-honey text-sm flex-shrink-0">✓</span> <span>Introduction to Sámi culture and traditions. Learning how to respectfully connect with and honor the Sámi land and way of life</span></li>
-                    <li className="flex items-start gap-2"><span className="text-honey text-sm flex-shrink-0">✓</span> <span>Transport included from Gällivare</span></li>
+                    <li className="flex flex-col gap-1">
+                      <div className="flex items-start gap-2">
+                        <span className="text-honey text-sm flex-shrink-0">✓</span>
+                        <span>Transport included from Gällivare</span>
+                      </div>
+                      <p className="pl-6 text-[11px] text-sand/60 font-light leading-relaxed">
+                        We provide group transfers from Gällivare Airport (GEV), and Gällivare Train Station. Please note that in Gällivare there is only one scheduled pick-up time from both the airport and train station on the arrival day at 2.50pm and from the lodge to the airport and train station at 10.00am on the departure day.
+                      </p>
+                    </li>
                     <li className="flex items-start gap-2"><span className="text-honey text-sm flex-shrink-0">✓</span> <span>An unforgettable experience in the UNESCO World Heritage region of Laponia</span></li>
                   </ul>
                 </div>
