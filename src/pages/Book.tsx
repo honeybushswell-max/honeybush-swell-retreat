@@ -559,7 +559,7 @@ export function Book() {
                         <span>Transport included from Gällivare</span>
                       </div>
                       <p className="pl-6 text-[11px] text-sand/60 font-light leading-relaxed">
-                        We provide group transfers from Gällivare Airport (GEV), and Gällivare Train Station. Please note that in Gällivare there is only one scheduled pick-up time from both the airport and train station on the arrival day at 2.50pm and from the lodge to the airport and train station at 10.00am on the departure day.
+                        We provide group transfers from Gällivare Airport (GEV), and Gällivare Train Station. Please note that in Gällivare there is only one scheduled pick-up time from both the airport and train station on the arrival day at 2.50pm and from the lodge to the airport and train station at 10.00am on the departure day. The bus drive takes approximately 2 hours.
                       </p>
                     </li>
                     <li className="flex items-start gap-2"><span className="text-honey text-sm flex-shrink-0">✓</span> <span>An unforgettable experience in the UNESCO World Heritage region of Laponia</span></li>
