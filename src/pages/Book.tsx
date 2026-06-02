@@ -75,6 +75,36 @@ export function Book() {
     setIsSubmitting(true);
     
     try {
+      const isShared = roomType === 'shared';
+      const firstPaymentOption = isShared ? "€299.70" : "€332.70";
+      const secondPaymentOption = isShared ? "€999.00" : "€1109.00";
+      
+      const emailContent = `Hi! Thank you so much for booking your spot on our Lapland Sweden Retreat. We are incredibly excited to welcome you to this special experience in the heart of Swedish Lapland. We love that you are joining us with an open heart, hoping to make lifelong friends and reconnect with nature. That is exactly the spirit of this retreat.
+
+Your spot is now reserved for 48 hours. Once we receive your bank transfer, we will send you a booking confirmation email.
+
+Our booking policy is as follows:
+• A 30% deposit is required to secure your spot. Deposits are non-refundable.
+• You may also choose to pay the full amount at the time of booking.
+• Full payment for all bookings is due two months before the retreat start date, which is 26 June.
+
+The payment options are:
+• 30% deposit: ${firstPaymentOption}
+• Full payment: ${secondPaymentOption}
+
+This is a women’s-only Hike & Soul Retreat, a chance to immerse yourself in calmness and Arctic magic. Think northern lights instead of beach clubs, hot saunas instead of heatwaves, and the raw silence of Swedish Lapland, the last true wilderness in Europe.
+
+We are located approximately two hours from Gällivare, the heart of Swedish Lapland, and all transportation between Gällivare and the lodge is included. There are direct flights from Stockholm with PopulAir and scenic train journeys from Stockholm with SJ.
+
+We will arrange:
+• One pickup from Gällivare at 2:50 PM on 26 August
+• One drop-off back in Gällivare at 12:00 PM on 30 August
+
+In our next email, we will share more detailed travel information to help you plan your journey.
+
+Lots of love,
+Natalia & Anna`;
+
       const formspreePayload = new FormData();
       formspreePayload.append("Form Type", "Lapland Sweden Booking - Bank Transfer Option");
       formspreePayload.append("Selected Room", roomType === 'shared' ? `Shared Room (${pricing.shared.price} EUR)` : `Private Room (${pricing.private.price} EUR)`);
@@ -82,6 +112,7 @@ export function Book() {
       formspreePayload.append("Payment Method Selected", "Direct Bank Transfer (Revolut)");
       formspreePayload.append("_subject", "Booking Received - Thank you for reserving your Lapland Spot!");
       formspreePayload.append("_replyto", formData.email);
+      formspreePayload.append("Confirmation Email Body", emailContent);
 
       Object.entries(formData).forEach(([key, value]) => {
         formspreePayload.append(key, value as string);
@@ -283,6 +314,44 @@ export function Book() {
               <p>
                 3. We will instantly verify the arrival and dispatch your official Lapland invitation package & travel booklet to <strong className="font-normal text-ocean-dark">{formData.email}</strong>.
               </p>
+            </div>
+
+            <div className="bg-white border border-sand-dark/80 rounded-sm p-6 md:p-8 space-y-4 shadow-sm relative overflow-hidden">
+              <div className="absolute top-0 left-0 right-0 h-[3px] bg-honey"></div>
+              <div className="flex items-center justify-between border-b border-sand pb-3 mb-2">
+                <div className="flex items-center gap-2">
+                  <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></div>
+                  <span className="text-xs font-semibold text-ocean-dark uppercase tracking-wider">Your Booking Confirmation Email has been sent!</span>
+                </div>
+                <span className="text-[10px] font-mono text-charcoal/50">To: {formData.email || 'your-email@domain.com'}</span>
+              </div>
+              <div className="text-xs text-charcoal/80 font-light leading-relaxed whitespace-pre-line space-y-3 font-serif italic bg-sand/10 p-5 rounded-sm border border-sand">
+                {`Hi! Thank you so much for booking your spot on our Lapland Sweden Retreat. We are incredibly excited to welcome you to this special experience in the heart of Swedish Lapland. We love that you are joining us with an open heart, hoping to make lifelong friends and reconnect with nature. That is exactly the spirit of this retreat.
+
+Your spot is now reserved for 48 hours. Once we receive your bank transfer, we will send you a booking confirmation email.
+
+Our booking policy is as follows:
+• A 30% deposit is required to secure your spot. Deposits are non-refundable.
+• You may also choose to pay the full amount at the time of booking.
+• Full payment for all bookings is due two months before the retreat start date, which is 26 June.
+
+The payment options are:
+• 30% deposit: ${roomType === 'shared' ? '€299.70' : '€332.70'}
+• Full payment: ${roomType === 'shared' ? '€999.00' : '€1109.00'}
+
+This is a women’s-only Hike & Soul Retreat, a chance to immerse yourself in calmness and Arctic magic. Think northern lights instead of beach clubs, hot saunas instead of heatwaves, and the raw silence of Swedish Lapland, the last true wilderness in Europe.
+
+We are located approximately two hours from Gällivare, the heart of Swedish Lapland, and all transportation between Gällivare and the lodge is included. There are direct flights from Stockholm with PopulAir and scenic train journeys from Stockholm with SJ.
+
+We will arrange:
+• One pickup from Gällivare at 2:50 PM on 26 August
+• One drop-off back in Gällivare at 12:00 PM on 30 August
+
+In our next email, we will share more detailed travel information to help you plan your journey.
+
+Lots of love,
+Natalia & Anna`}
+              </div>
             </div>
 
             <div className="pt-4 flex flex-col sm:flex-row gap-4 justify-center">
