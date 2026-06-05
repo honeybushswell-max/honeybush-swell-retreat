@@ -6,10 +6,15 @@ import { Check, ArrowRight, ShieldCheck, Landmark, Copy } from 'lucide-react';
 
 export function Book() {
   const location = useLocation();
-  const [roomType, setRoomType] = useState<'shared' | 'private'>('shared');
+  const [retreat, setRetreat] = useState<'lapland' | 'capetown'>('lapland');
+  const [roomType, setRoomType] = useState<string>('shared');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [copiedField, setCopiedField] = useState<string | null>(null);
+  const [promoCodeInput, setPromoCodeInput] = useState('');
+  const [appliedPromoCode, setAppliedPromoCode] = useState<string | null>(null);
+  const [promoError, setPromoError] = useState<string | null>(null);
+  const [promoSuccess, setPromoSuccess] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -18,68 +23,46 @@ export function Book() {
     location: '',
     age: '',
     hikingExp: '',
+    surfingExp: '',
     dietary: '',
     message: ''
   });
 
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const roomParam = params.get('room');
-    if (roomParam === 'private' || roomParam === 'shared') {
-      setRoomType(roomParam);
-    }
-
-    const sessionId = params.get('session_id');
-    const fName = params.get('firstName');
-    const lName = params.get('lastName');
-    const emailParam = params.get('email');
-
-    if (sessionId) {
-      setIsSubmitted(true);
-      if (fName || lName || emailParam) {
-        setFormData(prev => ({
-          ...prev,
-          firstName: fName || '',
-          lastName: lName || '',
-          email: emailParam || '',
-        }));
-      }
-    }
-  }, [location]);
-
-  const pricing = {
-    shared: {
-      title: "Shared Room",
-      price: 999,
-      desc: "Share a spacious, cozy room with one other retreat guest. Two twin beds, shared bathroom."
-    },
-    private: {
-      title: "Private Room",
-      price: 1109,
-      desc: "A peaceful sanctuary to return to. Private room with its own en-suite bathroom."
-    }
-  };
-
-  const selectedPackage = pricing[roomType];
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    
-    try {
-      const isShared = roomType === 'shared';
-      const firstPaymentOption = isShared ? "€299.70" : "€332.70";
-      const secondPaymentOption = isShared ? "€999.00" : "€1109.00";
-      
-      const emailContent = `Hi! Thank you so much for booking your spot on our Lapland Sweden Retreat. We are incredibly excited to welcome you to this special experience in the heart of Swedish Lapland. We love that you are joining us with an open heart, hoping to make lifelong friends and reconnect with nature. That is exactly the spirit of this retreat.
+  const pricingData = {
+    lapland: {
+      title: "Lapland, Sweden",
+      date: "August 26 - 30, 2026",
+      spacesLeft: 7, 
+      options: {
+        shared: {
+          title: "Shared Room",
+          price: 999,
+          desc: "Share a spacious, cozy room with one other retreat guest. Two twin beds, shared bathroom."
+        },
+        private: {
+          title: "Private Room",
+          price: 1109,
+          desc: "A peaceful sanctuary to return to. Private room with its own en-suite bathroom."
+        }
+      } as Record<string, { title: string; price: number; desc: string }>,
+      inclusions: [
+        "4 nights in a cozy mountain lodge",
+        "Daily hikes and immersive nature experiences",
+        "Sauna sessions & lakeside recovery",
+        "Chef-prepared nourishing meals included daily (breakfast, lunch & dinner)",
+        "Daily yoga, breathwork & women’s circle practices",
+        "Northern Lights chasing",
+        "Introduction to Sámi culture and traditions. Learning how to respectfully connect with and honor the Sámi land and way of life",
+        "Transport included from Gällivare. Gällivare pick-up is at 2:50 PM on arrival, and lodge to Gällivare drop-off is at 10:00 AM on departure day."
+      ],
+      emailFactory: (fName: string, lName: string, email: string, rType: string, customPrice?: number) => {
+        const isShared = rType === 'shared';
+        const basePrice = customPrice !== undefined ? customPrice : (isShared ? 999 : 1109);
+        const depositAmount = (basePrice * 0.3).toFixed(2);
+        const fullAmount = basePrice.toFixed(2);
+        const firstPaymentOption = `€${depositAmount}`;
+        const secondPaymentOption = `€${fullAmount}`;
+        return `Hi! Thank you so much for booking your spot on our Lapland Sweden Retreat. We are incredibly excited to welcome you to this special experience in the heart of Swedish Lapland. We love that you are joining us with an open heart, hoping to make lifelong friends and reconnect with nature. That is exactly the spirit of this retreat.
 
 Your spot is now reserved for 48 hours. Once we receive your bank transfer, we will send you a booking confirmation email.
 
@@ -104,13 +87,205 @@ In our next email, we will share more detailed travel information to help you pl
 
 Lots of love,
 Natalia & Anna`;
+      }
+    },
+    capetown: {
+      title: "Cape Town, South Africa",
+      date: "November 18 - 26, 2026",
+      spacesLeft: 10,
+      options: {
+        triple: {
+          title: "Triple Ocean View Room",
+          price: 1500,
+          desc: "Share a beautiful, spacious oceanfront room with scenic ocean views with two other retreat guests. Three single beds, shared bathroom."
+        },
+        double: {
+          title: "Double Quiet Oasis Room",
+          price: 1650,
+          desc: "Share a tranquil, comfortable oasis room with one other retreat guest. Two twin beds, shared bathroom."
+        }
+      } as Record<string, { title: string; price: number; desc: string }>,
+      inclusions: [
+        "8 nights in a beautiful oceanfront villa with breathtaking views and direct access to the ocean",
+        "5 professionally guided surf coaching sessions for all levels, including surfboard and wetsuit rental. If ocean conditions are unsuitable, sessions will be replaced with scenic hikes",
+        "Guided waterfall hike through some of the Cape's most stunning natural landscapes",
+        "5 yoga sessions and a restorative breathwork experience",
+        "Nourishing chef-prepared meals, including daily breakfasts and dinners, crafted with fresh local ingredients (excluding dinners during our Cape Peninsula weekend adventures)",
+        "2 workshops: Women's Circle & Cacao Ceremony and Traditional Beading Workshop with a local artist",
+        "Professional surf photography package (capturing shared moments and group experiences in the ocean)",
+        "Visit to a local market in a charming surf village",
+        "Weekend adventures around the Cape Peninsula, including coastal viewpoints, vineyards, the famous penguin colony, and stunning beaches",
+        "All transportation throughout the retreat, including airport transfers to and from Cape Town International Airport",
+        "A thoughtfully curated goodie bag"
+      ],
+      emailFactory: (fName: string, lName: string, email: string, rType: string, customPrice?: number) => {
+        const isTriple = rType === 'triple';
+        const basePrice = customPrice !== undefined ? customPrice : (isTriple ? 1500 : 1650);
+        const depositAmount = (basePrice * 0.3).toFixed(2);
+        const fullAmount = basePrice.toFixed(2);
+        const firstPaymentOption = `€${depositAmount}`;
+        const secondPaymentOption = `€${fullAmount}`;
+        return `Hi! Thank you so much for booking your spot on our Cape Town South Africa Retreat. We are incredibly excited to welcome you to this special experience on the pristine shores of the Cape Peninsula. We love that you are joining us with an open heart, hoping to make lifelong friends and reconnect with nature. That is exactly the spirit of this retreat.
 
+Your spot is now reserved for 48 hours. Once we receive your bank transfer, we will send you a booking confirmation email.
+
+Our booking policy is as follows:
+• A 30% deposit is required to secure your spot. Deposits are non-refundable.
+• You may also choose to pay the full amount at the time of booking.
+• Full payment for all bookings is due two months before the retreat start date, which is 18 September.
+
+The payment options are:
+• 30% deposit: ${firstPaymentOption}
+• Full payment: ${secondPaymentOption}
+
+This is a women’s-only Hike, Surf & Soul Retreat, a chance to immerse yourself in beautiful coastal nature, surf coaching, wellness workshops, and supportive ocean sisterhood.
+
+All transportation throughout the retreat, including airport transfers to and from Cape Town International Airport (CPT), is included.
+
+In our next email, we will share more detailed travel information to help you plan your journey.
+
+Lots of love,
+Natalia & Anna`;
+      }
+    }
+  };
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const retreatParam = params.get('retreat');
+    const roomParam = params.get('room');
+
+    let activeRetreat: 'lapland' | 'capetown' = 'lapland';
+    if (retreatParam === 'capetown') {
+      activeRetreat = 'capetown';
+    }
+    setRetreat(activeRetreat);
+
+    // Reset promo code states on retreat change
+    setPromoCodeInput('');
+    setAppliedPromoCode(null);
+    setPromoError(null);
+    setPromoSuccess(null);
+
+    if (activeRetreat === 'capetown') {
+      if (roomParam === 'triple' || roomParam === 'double') {
+        setRoomType(roomParam);
+      } else {
+        setRoomType('triple');
+      }
+    } else {
+      if (roomParam === 'private' || roomParam === 'shared') {
+        setRoomType(roomParam);
+      } else {
+        setRoomType('shared');
+      }
+    }
+
+    const sessionId = params.get('session_id');
+    const fName = params.get('firstName');
+    const lName = params.get('lastName');
+    const emailParam = params.get('email');
+
+    if (sessionId) {
+      setIsSubmitted(true);
+      if (fName || lName || emailParam) {
+        setFormData(prev => ({
+          ...prev,
+          firstName: fName || '',
+          lastName: lName || '',
+          email: emailParam || '',
+        }));
+      }
+    }
+  }, [location]);
+
+  const activePricing = pricingData[retreat];
+  const selectedPackage = activePricing.options[roomType] || Object.values(activePricing.options)[0];
+
+  const discountPercent = (appliedPromoCode === 'HELLOCAPETOWN10' && retreat === 'capetown') ? 0.10 : 0;
+  const discountAmount = Math.round(selectedPackage.price * discountPercent);
+  const finalPrice = selectedPackage.price - discountAmount;
+
+  const handleApplyPromoCode = (codeToApply?: string) => {
+    const code = (codeToApply !== undefined ? codeToApply : promoCodeInput).trim().toUpperCase();
+    if (code === '') {
+      setPromoError('Please enter a promo code.');
+      setPromoSuccess(null);
+      return;
+    }
+    if (code === 'HELLOCAPETOWN10') {
+      if (retreat !== 'capetown') {
+        setPromoError('This promo code is only valid for the Cape Town, South Africa retreat.');
+        setPromoSuccess(null);
+        setAppliedPromoCode(null);
+      } else {
+        setAppliedPromoCode('HELLOCAPETOWN10');
+        setPromoSuccess('Promo code "HELLOCAPETOWN10" applied! 10% discount has been activated.');
+        setPromoError(null);
+      }
+    } else {
+      setPromoError('Invalid promo code.');
+      setPromoSuccess(null);
+      setAppliedPromoCode(null);
+    }
+  };
+
+  const handleRemovePromoCode = () => {
+    setAppliedPromoCode(null);
+    setPromoCodeInput('');
+    setPromoSuccess(null);
+    setPromoError(null);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
+    try {
+      // Auto-apply promo code if typed but not explicitly applied yet
+      let currentPromo = appliedPromoCode;
+      let currentDiscountAmount = discountAmount;
+      let currentFinalPrice = finalPrice;
+      
+      const potentialCode = promoCodeInput.trim().toUpperCase();
+      if (!appliedPromoCode && potentialCode === 'HELLOCAPETOWN10' && retreat === 'capetown') {
+        currentPromo = 'HELLOCAPETOWN10';
+        currentDiscountAmount = Math.round(selectedPackage.price * 0.10);
+        currentFinalPrice = selectedPackage.price - currentDiscountAmount;
+        setAppliedPromoCode('HELLOCAPETOWN10');
+        setPromoSuccess('Promo code "HELLOCAPETOWN10" applied! 10% discount has been activated.');
+        setPromoError(null);
+      }
+
+      const emailContent = activePricing.emailFactory(
+        formData.firstName,
+        formData.lastName,
+        formData.email,
+        roomType,
+        currentFinalPrice
+      );
+      
       const formspreePayload = new FormData();
-      formspreePayload.append("Form Type", "Lapland Sweden Booking - Bank Transfer Option");
-      formspreePayload.append("Selected Room", roomType === 'shared' ? `Shared Room (${pricing.shared.price} EUR)` : `Private Room (${pricing.private.price} EUR)`);
-      formspreePayload.append("Retreat Date", "August 26 - 30, 2026");
+      formspreePayload.append("Form Type", `${retreat === 'capetown' ? "Cape Town South Africa" : "Lapland Sweden"} Booking - Bank Transfer Option`);
+      formspreePayload.append("Selected Room", `${selectedPackage.title} (${selectedPackage.price} EUR)`);
+      if (currentPromo) {
+        formspreePayload.append("Promo Code Applied", currentPromo);
+        formspreePayload.append("Discount Amount", `${currentDiscountAmount} EUR`);
+        formspreePayload.append("Final Price", `${currentFinalPrice} EUR`);
+      } else {
+        formspreePayload.append("Final Price", `${selectedPackage.price} EUR`);
+      }
+      formspreePayload.append("Retreat Date", activePricing.date);
       formspreePayload.append("Payment Method Selected", "Direct Bank Transfer (Revolut)");
-      formspreePayload.append("_subject", "Booking Received - Thank you for reserving your Lapland Spot!");
+      formspreePayload.append("_subject", `Booking Received - Thank you for reserving your ${retreat === 'capetown' ? 'Cape Town' : 'Lapland'} Spot!`);
       formspreePayload.append("_replyto", formData.email);
       formspreePayload.append("Confirmation Email Body", emailContent);
 
@@ -166,7 +341,7 @@ Natalia & Anna`;
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
             className="text-lg text-charcoal/70 font-light max-w-2xl mx-auto"
           >
-            Secure your spot for the **Lapland, Sweden** retreat (August 26 - 30, 2026). Spaces are limited to strictly 7 women to preserve an authentic, deeply nourishing sisterhood.
+            Secure your spot for the <strong className="font-semibold text-ocean-dark">{activePricing.title}</strong> retreat ({activePricing.date}). Spaces are limited to strictly {activePricing.spacesLeft} women to preserve an authentic, deeply nourishing sisterhood.
           </motion.p>
         </div>
 
@@ -183,7 +358,7 @@ Natalia & Anna`;
               <span className="text-honey uppercase tracking-[0.15em] text-xs font-semibold block">Spot Reserved - Pending Transfer</span>
               <h2 className="text-3xl font-serif text-ocean-dark">Your Spot is Initiated!</h2>
               <p className="text-sm text-charcoal/70 font-light max-w-md mx-auto">
-                Thank you so much for booking with us! We are holding your spot for up to 48 hours. Please complete your bank transfer of <strong className="font-semibold text-honey">{selectedPackage.price} EUR</strong> using the bank details below. A copy of these transfer details and instructions has been emailed to you at <strong className="font-semibold text-honey">{formData.email}</strong>.
+                Thank you so much for booking with us! We are holding your spot for up to 48 hours. Please complete your bank transfer of <strong className="font-semibold text-honey">{finalPrice} EUR</strong> using the bank details below. {appliedPromoCode && <span className="block text-xs text-emerald-600 font-normal mt-1">10% Promo Code "{appliedPromoCode}" successfully applied!</span>} A copy of these transfer details and instructions has been emailed to you at <strong className="font-semibold text-honey">{formData.email}</strong>.
               </p>
             </div>
 
@@ -306,13 +481,13 @@ Natalia & Anna`;
             <div className="bg-ocean/10 p-5 rounded-sm border border-sand-dark/40 text-xs font-light leading-relaxed text-charcoal space-y-3">
               <span className="font-semibold text-ocean-dark block uppercase tracking-wider text-[10px]">Next Steps to Finalize Reservation:</span>
               <p>
-                1. Complete the transfer of <strong className="text-honey font-medium">{selectedPackage.price} EUR</strong> directly to the Revolut account above.
+                1. Complete the transfer of <strong className="text-honey font-medium">{finalPrice} EUR</strong> directly to the Revolut account above.
               </p>
               <p>
                 2. Save your transfer confirmation (PDF or screenshot) and email it to <a href="mailto:honeybushswell@gmail.com" className="underline hover:text-honey text-ocean-dark font-medium">honeybushswell@gmail.com</a>.
               </p>
               <p>
-                3. We will instantly verify the arrival and dispatch your official Lapland invitation package & travel booklet to <strong className="font-normal text-ocean-dark">{formData.email}</strong>.
+                3. We will instantly verify the arrival and dispatch your official invitation package & travel booklet to <strong className="font-normal text-ocean-dark">{formData.email}</strong>.
               </p>
             </div>
 
@@ -326,31 +501,7 @@ Natalia & Anna`;
                 <span className="text-[10px] font-mono text-charcoal/50">To: {formData.email || 'your-email@domain.com'}</span>
               </div>
               <div className="text-xs text-charcoal/80 font-light leading-relaxed whitespace-pre-line space-y-3 font-serif italic bg-sand/10 p-5 rounded-sm border border-sand">
-                {`Hi! Thank you so much for booking your spot on our Lapland Sweden Retreat. We are incredibly excited to welcome you to this special experience in the heart of Swedish Lapland. We love that you are joining us with an open heart, hoping to make lifelong friends and reconnect with nature. That is exactly the spirit of this retreat.
-
-Your spot is now reserved for 48 hours. Once we receive your bank transfer, we will send you a booking confirmation email.
-
-Our booking policy is as follows:
-• A 30% deposit is required to secure your spot. Deposits are non-refundable.
-• You may also choose to pay the full amount at the time of booking.
-• Full payment for all bookings is due two months before the retreat start date, which is 26 June.
-
-The payment options are:
-• 30% deposit: ${roomType === 'shared' ? '€299.70' : '€332.70'}
-• Full payment: ${roomType === 'shared' ? '€999.00' : '€1109.00'}
-
-This is a women’s-only Hike & Soul Retreat, a chance to immerse yourself in calmness and Arctic magic. Think northern lights instead of beach clubs, hot saunas instead of heatwaves, and the raw silence of Swedish Lapland, the last true wilderness in Europe.
-
-We are located approximately two hours from Gällivare, the heart of Swedish Lapland, and all transportation between Gällivare and the lodge is included. There are direct flights from Stockholm with PopulAir and scenic train journeys from Stockholm with SJ.
-
-We will arrange:
-• One pickup from Gällivare at 2:50 PM on 26 August
-• One drop-off back in Gällivare at 12:00 PM on 30 August
-
-In our next email, we will share more detailed travel information to help you plan your journey.
-
-Lots of love,
-Natalia & Anna`}
+                {activePricing.emailFactory(formData.firstName, formData.lastName, formData.email, roomType, finalPrice)}
               </div>
             </div>
 
@@ -378,55 +529,36 @@ Natalia & Anna`}
                 <h3 className="text-sm uppercase tracking-widest text-ocean-dark font-semibold">1. Select your accommodation</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   
-                  {/* Shared Room */}
-                  <div 
-                    onClick={() => setRoomType('shared')}
-                    className={`p-6 rounded-sm border cursor-pointer transition-all duration-300 flex flex-col relative ${
-                      roomType === 'shared' 
-                        ? 'bg-white border-honey shadow-sm ring-1 ring-honey' 
-                        : 'bg-white/40 border-sand-dark/60 hover:bg-white/70'
-                    }`}
-                  >
-                    {roomType === 'shared' && (
-                      <div className="absolute top-4 right-4 bg-honey text-ocean-dark rounded-full p-1">
-                        <Check size={14} strokeWidth={3} />
+                  {Object.entries(activePricing.options).map(([key, rawItem], idx) => {
+                    const item = rawItem as { title: string; price: number; desc: string };
+                    const isSelected = roomType === key;
+                    return (
+                      <div 
+                        key={key}
+                        onClick={() => setRoomType(key)}
+                        className={`p-6 rounded-sm border cursor-pointer transition-all duration-300 flex flex-col relative ${
+                          isSelected 
+                            ? 'bg-white border-honey shadow-sm ring-1 ring-honey' 
+                            : 'bg-white/40 border-sand-dark/60 hover:bg-white/70'
+                        }`}
+                      >
+                        {isSelected && (
+                          <div className="absolute top-4 right-4 bg-honey text-ocean-dark rounded-full p-1">
+                            <Check size={14} strokeWidth={3} />
+                          </div>
+                        )}
+                        <span className="text-charcoal/50 uppercase tracking-widest text-[10px] font-semibold block mb-1">Option {idx + 1}</span>
+                        <h4 className="text-xl font-serif text-ocean-dark mb-1">{item.title}</h4>
+                        <span className="text-2xl font-light text-honey mb-4">{item.price} EUR</span>
+                        <p className="text-xs text-charcoal/70 font-light leading-relaxed mb-4">
+                          {item.desc}
+                        </p>
+                        <span className="text-[10px] uppercase tracking-widest text-honey font-medium mt-auto flex items-center gap-1.5">
+                          ✓ All packages included
+                        </span>
                       </div>
-                    )}
-                    <span className="text-charcoal/50 uppercase tracking-widest text-[10px] font-semibold block mb-1">Option 1</span>
-                    <h4 className="text-xl font-serif text-ocean-dark mb-1">Shared Room</h4>
-                    <span className="text-2xl font-light text-honey mb-4">{pricing.shared.price} EUR</span>
-                    <p className="text-xs text-charcoal/70 font-light leading-relaxed mb-4">
-                      Share with one other retreat guest. Two twin beds, spacious serene setting, and fully shared amenities.
-                    </p>
-                    <span className="text-[10px] uppercase tracking-widest text-honey font-medium mt-auto flex items-center gap-1.5">
-                      ✓ All packages included
-                    </span>
-                  </div>
-
-                  {/* Private Room */}
-                  <div 
-                    onClick={() => setRoomType('private')}
-                    className={`p-6 rounded-sm border cursor-pointer transition-all duration-300 flex flex-col relative ${
-                      roomType === 'private' 
-                        ? 'bg-white border-honey shadow-sm ring-1 ring-honey' 
-                        : 'bg-white/40 border-sand-dark/60 hover:bg-white/70'
-                    }`}
-                  >
-                    {roomType === 'private' && (
-                      <div className="absolute top-4 right-4 bg-honey text-ocean-dark rounded-full p-1">
-                        <Check size={14} strokeWidth={3} />
-                      </div>
-                    )}
-                    <span className="text-charcoal/50 uppercase tracking-widest text-[10px] font-semibold block mb-1">Option 2</span>
-                    <h4 className="text-xl font-serif text-ocean-dark mb-1">Private Room</h4>
-                    <span className="text-2xl font-light text-honey mb-4">{pricing.private.price} EUR</span>
-                    <p className="text-xs text-charcoal/70 font-light leading-relaxed mb-4">
-                      An absolute peaceful sanctuary with its own en-suite bathroom for premium comfort and quiet evenings.
-                    </p>
-                    <span className="text-[10px] uppercase tracking-widest text-honey font-medium mt-auto flex items-center gap-1.5">
-                      ✓ All packages included
-                    </span>
-                  </div>
+                    );
+                  })}
 
                 </div>
               </div>
@@ -535,6 +667,22 @@ Natalia & Anna`}
                     />
                   </div>
 
+                  {retreat === 'capetown' && (
+                    <div className="space-y-2">
+                      <label htmlFor="surfingExp" className="text-xs uppercase tracking-widest text-ocean-dark font-medium">Surfing Experience</label>
+                      <input
+                        type="text"
+                        id="surfingExp"
+                        name="surfingExp"
+                        value={formData.surfingExp}
+                        onChange={handleInputChange}
+                        placeholder="e.g. Complete beginner, some experience, advanced..."
+                        className="w-full bg-transparent border-b border-sand-dark py-2.5 focus:outline-none focus:border-honey transition-colors font-light text-charcoal text-sm"
+                        required={retreat === 'capetown'}
+                      />
+                    </div>
+                  )}
+
                   <div className="space-y-2">
                     <label htmlFor="dietary" className="text-xs uppercase tracking-widest text-ocean-dark font-medium">Dietary Requirements</label>
                     <input
@@ -559,6 +707,60 @@ Natalia & Anna`}
                       className="w-full bg-transparent border-b border-sand-dark py-2 focus:outline-none focus:border-honey transition-colors font-light text-charcoal text-sm resize-none"
                       placeholder="What are you hoping to experience or release on this retreat?"
                     ></textarea>
+                  </div>
+
+                  {/* Promo Code Block */}
+                  <div className="space-y-4 pt-6 border-t border-sand">
+                    <div className="flex justify-between items-baseline">
+                      <h3 className="text-sm uppercase tracking-widest text-ocean-dark font-semibold">
+                        Promo Code
+                      </h3>
+                      {appliedPromoCode === 'HELLOCAPETOWN10' && (
+                        <span className="text-[10px] text-emerald-600 font-medium uppercase tracking-wider">
+                          10% Off Applied
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex gap-4 items-end bg-sand/10 p-4 border border-sand-dark/30 rounded-sm">
+                      <div className="flex-1 space-y-1">
+                        <label htmlFor="promoCode" className="text-[10px] uppercase tracking-widest text-charcoal/50 font-medium font-sans">
+                          Enter Code
+                        </label>
+                        <input
+                          type="text"
+                          id="promoCode"
+                          placeholder="Enter promo code"
+                          value={promoCodeInput}
+                          onChange={(e) => setPromoCodeInput(e.target.value)}
+                          className="w-full bg-transparent border-b border-sand-dark py-2 focus:outline-none focus:border-honey transition-colors font-light text-charcoal text-sm uppercase font-mono"
+                          disabled={!!appliedPromoCode}
+                        />
+                      </div>
+                      {appliedPromoCode ? (
+                        <Button 
+                          type="button" 
+                          variant="outline" 
+                          onClick={handleRemovePromoCode}
+                          className="uppercase tracking-widest text-[10px] h-9 px-4 border-rose-200 text-rose-600 hover:bg-rose-50"
+                        >
+                          Remove
+                        </Button>
+                      ) : (
+                        <Button 
+                          type="button" 
+                          onClick={() => handleApplyPromoCode()}
+                          className="uppercase tracking-widest text-[10px] h-9 px-4 bg-honey text-ocean-dark hover:bg-honey/80 font-semibold"
+                        >
+                          Apply
+                        </Button>
+                      )}
+                    </div>
+                    {promoError && (
+                      <p className="text-xs text-rose-600 font-light font-sans">{promoError}</p>
+                    )}
+                    {promoSuccess && (
+                      <p className="text-xs text-emerald-600 font-light font-sans">{promoSuccess}</p>
+                    )}
                   </div>
 
                   {/* Bank Transfer Information Block */}
@@ -598,8 +800,8 @@ Natalia & Anna`}
               <div className="bg-ocean-dark text-sand p-8 rounded-sm shadow-md border border-sand-dark/20 space-y-6">
                 <div>
                   <span className="text-honey uppercase tracking-wider text-[10px] font-semibold">Your Package Summary</span>
-                  <h3 className="text-2xl font-serif text-sand mt-1">Lapland, Sweden</h3>
-                  <p className="text-sm font-light text-sand/70 italic mt-1">August 26 - 30, 2026</p>
+                  <h3 className="text-2xl font-serif text-sand mt-1">{activePricing.title}</h3>
+                  <p className="text-sm font-light text-sand/70 italic mt-1">{activePricing.date}</p>
                 </div>
 
                 <div className="border-t border-b border-sand/10 py-5 space-y-4">
@@ -610,34 +812,42 @@ Natalia & Anna`}
                     </div>
                     <span className="text-lg font-light text-sand">{selectedPackage.price} EUR</span>
                   </div>
+
+                  {appliedPromoCode && (
+                    <div className="flex justify-between items-center text-xs text-sand/80 bg-honey/10 p-2.5 rounded-sm border border-honey/20">
+                      <div>
+                        <span className="block font-semibold text-honey">Promo Code applied:</span>
+                        <span className="font-mono text-[10px]">{appliedPromoCode} (10% Off)</span>
+                      </div>
+                      <span className="text-honey font-medium font-mono">-{discountAmount} EUR</span>
+                    </div>
+                  )}
                 </div>
 
                 <div className="space-y-4">
                   <h4 className="text-xs uppercase tracking-widest text-honey font-semibold">Inclusions:</h4>
                   <ul className="grid grid-cols-1 gap-2 text-xs font-light text-sand/80">
-                    <li className="flex items-start gap-2"><span className="text-honey text-sm flex-shrink-0">✓</span> <span>4 nights in a cozy mountain lodge</span></li>
-                    <li className="flex items-start gap-2"><span className="text-honey text-sm flex-shrink-0">✓</span> <span>Daily hikes and immersive nature experiences</span></li>
-                    <li className="flex items-start gap-2"><span className="text-honey text-sm flex-shrink-0">✓</span> <span>Sauna sessions & lakeside recovery</span></li>
-                    <li className="flex items-start gap-2"><span className="text-honey text-sm flex-shrink-0">✓</span> <span>Chef-prepared nourishing meals included daily (breakfast, lunch & dinner)</span></li>
-                    <li className="flex items-start gap-2"><span className="text-honey text-sm flex-shrink-0">✓</span> <span>Daily yoga, breathwork & women’s circle practices</span></li>
-                    <li className="flex items-start gap-2"><span className="text-honey text-sm flex-shrink-0">✓</span> <span>Northern Lights chasing</span></li>
-                    <li className="flex items-start gap-2"><span className="text-honey text-sm flex-shrink-0">✓</span> <span>Introduction to Sámi culture and traditions. Learning how to respectfully connect with and honor the Sámi land and way of life</span></li>
-                    <li className="flex flex-col gap-1">
-                      <div className="flex items-start gap-2">
+                    {activePricing.inclusions.map((inclusion, idx) => (
+                      <li key={idx} className="flex items-start gap-2">
                         <span className="text-honey text-sm flex-shrink-0">✓</span>
-                        <span>Transport included from Gällivare</span>
-                      </div>
-                      <p className="pl-6 text-[11px] text-sand/60 font-light leading-relaxed">
-                        We provide group transfers from Gällivare Airport (GEV), and Gällivare Train Station. Please note that in Gällivare there is only one scheduled pick-up time from both the airport and train station on the arrival day at 2.50pm and from the lodge to the airport and train station at 10.00am on the departure day. The bus drive takes approximately 2 hours.
-                      </p>
-                    </li>
-                    <li className="flex items-start gap-2"><span className="text-honey text-sm flex-shrink-0">✓</span> <span>An unforgettable experience in the UNESCO World Heritage region of Laponia</span></li>
+                        <span>{inclusion}</span>
+                      </li>
+                    ))}
                   </ul>
                 </div>
 
                 <div className="border-t border-sand/10 pt-5 flex justify-between items-baseline">
                   <span className="text-sm font-medium uppercase tracking-wider text-sand/70">Total Investment</span>
-                  <span className="text-3xl font-light text-honey font-mono">{selectedPackage.price} EUR</span>
+                  <div className="text-right">
+                    {appliedPromoCode ? (
+                      <div className="flex flex-col items-end">
+                        <span className="text-xs line-through text-sand/50 font-mono mb-1">{selectedPackage.price} EUR</span>
+                        <span className="text-3xl font-light text-honey font-mono">{finalPrice} EUR</span>
+                      </div>
+                    ) : (
+                      <span className="text-3xl font-light text-honey font-mono">{selectedPackage.price} EUR</span>
+                    )}
+                  </div>
                 </div>
 
                 <div className="bg-ocean/30 p-4 rounded-sm space-y-2 border border-sand/5">

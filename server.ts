@@ -72,7 +72,8 @@ app.post("/api/create-checkout-session", async (req, res) => {
 
 // Vite middleware integration
 async function startServer() {
-  const isDev = process.env.NODE_ENV !== "production";
+  const isCjsBundle = typeof __filename !== "undefined" && (__filename.endsWith("server.cjs") || __filename.includes("dist"));
+  const isDev = process.env.NODE_ENV !== "production" && !isCjsBundle;
 
   if (isDev) {
     const { createServer } = await eval('import("vite")');

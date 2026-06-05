@@ -180,35 +180,47 @@ export function Experience() {
                   <ul className="space-y-3 text-charcoal/80 font-light">
                     <li className="flex items-start gap-3">
                       <span className="text-honey mt-1">✦</span>
-                      <span>8 nights in a oceanfront villa</span>
+                      <span>8 nights in a beautiful oceanfront villa with breathtaking views and direct access to the ocean</span>
                     </li>
                     <li className="flex items-start gap-3">
                       <span className="text-honey mt-1">✦</span>
-                      <span>5 surf coaching sessions for all levels (equipment included) - if ocean conditions are unsuitable, the experience will be replaced with a breathtaking hike instead</span>
+                      <span>5 professionally guided surf coaching sessions for all levels, including surfboard and wetsuit rental. If ocean conditions are unsuitable, sessions will be replaced with scenic hikes</span>
                     </li>
                     <li className="flex items-start gap-3">
                       <span className="text-honey mt-1">✦</span>
-                      <span>5 yoga flows + a breathwork session</span>
+                      <span>Guided waterfall hike through some of the Cape's most stunning natural landscapes</span>
                     </li>
                     <li className="flex items-start gap-3">
                       <span className="text-honey mt-1">✦</span>
-                      <span>All nourishing, chef-prepared meals (daily breakfasts and dinners except during our weekend outings)</span>
+                      <span>5 yoga sessions and a restorative breathwork experience</span>
                     </li>
                     <li className="flex items-start gap-3">
                       <span className="text-honey mt-1">✦</span>
-                      <span>Two guided workshops: Women’s Circle & beading workshop with a local artist</span>
+                      <span>Nourishing chef-prepared meals, including daily breakfasts and dinners, crafted with fresh local ingredients (excluding dinners during our Cape Peninsula weekend adventures)</span>
                     </li>
                     <li className="flex items-start gap-3">
                       <span className="text-honey mt-1">✦</span>
-                      <span>Professional surf photography package (capturing shared moments in the ocean and beyond)</span>
+                      <span>2 workshops: Women's Circle & Cacao Ceremony and Traditional Beading Workshop with a local artist</span>
                     </li>
                     <li className="flex items-start gap-3">
                       <span className="text-honey mt-1">✦</span>
-                      <span>Weekend adventures around the Cape Peninsula (vineyards, penguin colony, and breathtaking beaches)</span>
+                      <span>Professional surf photography package (capturing shared moments and group experiences in the ocean)</span>
                     </li>
                     <li className="flex items-start gap-3">
                       <span className="text-honey mt-1">✦</span>
-                      <span>Airport transfers from Cape Town International (CPT)</span>
+                      <span>Visit to a vibrant local market in a charming surf village</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="text-honey mt-1">✦</span>
+                      <span>Weekend adventures around the Cape Peninsula, including coastal viewpoints, vineyards, the famous penguin colony, and stunning beaches</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="text-honey mt-1">✦</span>
+                      <span>All transportation throughout the retreat, including airport transfers to and from Cape Town International Airport</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="text-honey mt-1">✦</span>
+                      <span>A thoughtfully curated goodie bag</span>
                     </li>
                   </ul>
                 </div>
