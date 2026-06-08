@@ -74,7 +74,7 @@ export function Dates() {
             <div className="border border-sand/20 p-8 rounded-sm flex flex-col">
               <h3 className="text-2xl font-serif text-honey mb-2">Shared Room</h3>
               <p className="text-3xl font-light mb-6">999 EUR</p>
-              <p className="font-light text-sand/80 leading-relaxed mb-8">
+              <p className="font-light text-sand/80 leading-relaxed mb-8 flex-1">
                 Perfect for solo travelers looking to connect. Share a spacious, room with one other retreat guest. Two twin beds, shared bathroom with other retreat guests.
               </p>
               <ul className="space-y-3 text-sm font-light text-sand/80 mb-8">
@@ -90,7 +90,7 @@ export function Dates() {
             <div className="border border-sand/20 p-8 rounded-sm relative overflow-hidden flex flex-col">
               <h3 className="text-2xl font-serif text-honey mb-2">Private Room</h3>
               <p className="text-3xl font-light mb-6">1109 EUR</p>
-              <p className="font-light text-sand/80 leading-relaxed mb-8">
+              <p className="font-light text-sand/80 leading-relaxed mb-8 flex-1">
                 For those who crave a peaceful sanctuary to return to at the end of each day. A private room with its own en-suite bathroom.
               </p>
               <ul className="space-y-3 text-sm font-light text-sand/80 mb-8">
@@ -117,7 +117,7 @@ export function Dates() {
             <div className="border border-sand/20 p-8 rounded-sm flex flex-col">
               <h3 className="text-2xl font-serif text-honey mb-2">Triple Ocean View Room</h3>
               <p className="text-3xl font-light mb-6">1500 EUR</p>
-              <p className="font-light text-sand/80 leading-relaxed mb-8">
+              <p className="font-light text-sand/80 leading-relaxed mb-8 flex-1">
                 Share a beautiful, spacious oceanfront room with scenic ocean views with two other retreat guests. Three single beds, shared bathroom. Perfect for solo travelers wanting to connect!
               </p>
               <ul className="space-y-3 text-sm font-light text-sand/80 mb-8">
@@ -133,7 +133,7 @@ export function Dates() {
             <div className="border border-sand/20 p-8 rounded-sm relative overflow-hidden flex flex-col">
               <h3 className="text-2xl font-serif text-honey mb-2">Double Quiet Oasis Room</h3>
               <p className="text-3xl font-light mb-6">1650 EUR</p>
-              <p className="font-light text-sand/80 leading-relaxed mb-8">
+              <p className="font-light text-sand/80 leading-relaxed mb-8 flex-1">
                 For those looking for a tranquil, comfortable oasis. Share a peaceful quiet oasis room with one other retreat guest. Two twin beds, shared bathroom.
               </p>
               <ul className="space-y-3 text-sm font-light text-sand/80 mb-8">

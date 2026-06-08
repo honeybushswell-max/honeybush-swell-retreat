@@ -202,7 +202,9 @@ Natalia & Anna`;
   const activePricing = pricingData[retreat];
   const selectedPackage = activePricing.options[roomType] || Object.values(activePricing.options)[0];
 
-  const discountPercent = (appliedPromoCode === 'HELLOCAPETOWN10' && retreat === 'capetown') ? 0.10 : 0;
+  const discountPercent = 
+    (appliedPromoCode === 'HELLOCAPETOWN10' && retreat === 'capetown') ? 0.10 : 
+    (appliedPromoCode === 'LAPLANDPILATES' && retreat === 'lapland') ? 0.20 : 0;
   const discountAmount = Math.round(selectedPackage.price * discountPercent);
   const finalPrice = selectedPackage.price - discountAmount;
 
@@ -221,6 +223,16 @@ Natalia & Anna`;
       } else {
         setAppliedPromoCode('HELLOCAPETOWN10');
         setPromoSuccess('Promo code "HELLOCAPETOWN10" applied! 10% discount has been activated.');
+        setPromoError(null);
+      }
+    } else if (code === 'LAPLANDPILATES') {
+      if (retreat !== 'lapland') {
+        setPromoError('This promo code is only valid for the Lapland, Sweden retreat.');
+        setPromoSuccess(null);
+        setAppliedPromoCode(null);
+      } else {
+        setAppliedPromoCode('LAPLANDPILATES');
+        setPromoSuccess('Promo code "LAPLANDPILATES" applied! 20% discount has been activated.');
         setPromoError(null);
       }
     } else {
@@ -256,13 +268,22 @@ Natalia & Anna`;
       let currentFinalPrice = finalPrice;
       
       const potentialCode = promoCodeInput.trim().toUpperCase();
-      if (!appliedPromoCode && potentialCode === 'HELLOCAPETOWN10' && retreat === 'capetown') {
-        currentPromo = 'HELLOCAPETOWN10';
-        currentDiscountAmount = Math.round(selectedPackage.price * 0.10);
-        currentFinalPrice = selectedPackage.price - currentDiscountAmount;
-        setAppliedPromoCode('HELLOCAPETOWN10');
-        setPromoSuccess('Promo code "HELLOCAPETOWN10" applied! 10% discount has been activated.');
-        setPromoError(null);
+      if (!appliedPromoCode) {
+        if (potentialCode === 'HELLOCAPETOWN10' && retreat === 'capetown') {
+          currentPromo = 'HELLOCAPETOWN10';
+          currentDiscountAmount = Math.round(selectedPackage.price * 0.10);
+          currentFinalPrice = selectedPackage.price - currentDiscountAmount;
+          setAppliedPromoCode('HELLOCAPETOWN10');
+          setPromoSuccess('Promo code "HELLOCAPETOWN10" applied! 10% discount has been activated.');
+          setPromoError(null);
+        } else if (potentialCode === 'LAPLANDPILATES' && retreat === 'lapland') {
+          currentPromo = 'LAPLANDPILATES';
+          currentDiscountAmount = Math.round(selectedPackage.price * 0.20);
+          currentFinalPrice = selectedPackage.price - currentDiscountAmount;
+          setAppliedPromoCode('LAPLANDPILATES');
+          setPromoSuccess('Promo code "LAPLANDPILATES" applied! 20% discount has been activated.');
+          setPromoError(null);
+        }
       }
 
       const emailContent = activePricing.emailFactory(
@@ -358,7 +379,7 @@ Natalia & Anna`;
               <span className="text-honey uppercase tracking-[0.15em] text-xs font-semibold block">Spot Reserved - Pending Transfer</span>
               <h2 className="text-3xl font-serif text-ocean-dark">Your Spot is Initiated!</h2>
               <p className="text-sm text-charcoal/70 font-light max-w-md mx-auto">
-                Thank you so much for booking with us! We are holding your spot for up to 48 hours. Please complete your bank transfer of <strong className="font-semibold text-honey">{finalPrice} EUR</strong> using the bank details below. {appliedPromoCode && <span className="block text-xs text-emerald-600 font-normal mt-1">10% Promo Code "{appliedPromoCode}" successfully applied!</span>} A copy of these transfer details and instructions has been emailed to you at <strong className="font-semibold text-honey">{formData.email}</strong>.
+                Thank you so much for booking with us! We are holding your spot for up to 48 hours. Please complete your bank transfer of <strong className="font-semibold text-honey">{finalPrice} EUR</strong> using the bank details below. {appliedPromoCode && <span className="block text-xs text-emerald-600 font-normal mt-1">{appliedPromoCode === 'LAPLANDPILATES' ? '20%' : '10%'} Promo Code "{appliedPromoCode}" successfully applied!</span>} A copy of these transfer details and instructions has been emailed to you at <strong className="font-semibold text-honey">{formData.email}</strong>.
               </p>
             </div>
 
@@ -715,9 +736,9 @@ Natalia & Anna`;
                       <h3 className="text-sm uppercase tracking-widest text-ocean-dark font-semibold">
                         Promo Code
                       </h3>
-                      {appliedPromoCode === 'HELLOCAPETOWN10' && (
+                      {appliedPromoCode && (
                         <span className="text-[10px] text-emerald-600 font-medium uppercase tracking-wider">
-                          10% Off Applied
+                          {appliedPromoCode === 'LAPLANDPILATES' ? '20% Off Applied' : '10% Off Applied'}
                         </span>
                       )}
                     </div>
@@ -817,7 +838,7 @@ Natalia & Anna`;
                     <div className="flex justify-between items-center text-xs text-sand/80 bg-honey/10 p-2.5 rounded-sm border border-honey/20">
                       <div>
                         <span className="block font-semibold text-honey">Promo Code applied:</span>
-                        <span className="font-mono text-[10px]">{appliedPromoCode} (10% Off)</span>
+                        <span className="font-mono text-[10px]">{appliedPromoCode} ({appliedPromoCode === 'LAPLANDPILATES' ? '20%' : '10%'} Off)</span>
                       </div>
                       <span className="text-honey font-medium font-mono">-{discountAmount} EUR</span>
                     </div>

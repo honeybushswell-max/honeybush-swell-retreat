@@ -33,7 +33,7 @@ export function FAQ() {
     },
     {
       question: "What is our booking policy?",
-      answer: "As our retreats are very intimate (only 10 women or fewer per retreat), we encourage early booking. Be among the first to secure your spot by filling in the pre-registration form - we can’t wait to get to know you and welcome you into our community.\n\nBooking details\n\nA 30% deposit is required to secure your spot. Deposits are non-refundable.*\n\nYou may also choose to pay the full amount at the time of booking.\n\nFull payment for all bookings is required 2 months before the retreat start date.\n\nSecure your place early to ensure your spot in this transformative retreat experience.\n\n*For our Sweden (Lapland) retreat: if we do not reach at least 50% of the minimum number of participants 2 months before the retreat start date, we reserve the right to cancel the retreat. In this case, all payments made will be refunded in full (100%)."
+      answer: "As our retreats are very intimate (only 10 women or fewer per retreat), we encourage early booking. Be among the first to secure your spot by filling in the pre-registration form - we can’t wait to get to know you and welcome you into our community.\n\nBooking details\n- A 30% deposit is required to secure your spot. Deposits are non-refundable.\n- You may also choose to pay the full amount at the time of booking.\n- Full payment for all bookings is required 2 months before the retreat start date.\nSecure your place early to ensure your spot in this transformative retreat experience!"
     }
   ];
 
