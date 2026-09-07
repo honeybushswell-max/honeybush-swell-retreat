@@ -65,7 +65,7 @@ export function Navbar() {
               {link.name}
             </Link>
           ))}
-          <Link to="/book">
+          <Link to="/book?retreat=capetown">
             <Button className="bg-honey text-ocean-dark hover:bg-white hover:text-ocean-dark font-semibold uppercase tracking-widest text-xs px-5">
               Book Now
             </Button>
@@ -89,13 +89,14 @@ export function Navbar() {
               <Link
                 key={link.name}
                 to={link.path}
+                onClick={() => setIsMobileMenuOpen(false)}
                 className="text-sm uppercase tracking-widest text-sand hover:text-honey py-2"
               >
                 {link.name}
               </Link>
             ))}
             <div className="pt-4 border-t border-sand-dark flex flex-col gap-3">
-              <Link to="/book">
+              <Link to="/book?retreat=capetown" onClick={() => setIsMobileMenuOpen(false)}>
                 <Button className="w-full bg-honey text-ocean-dark hover:bg-white uppercase tracking-widest text-xs font-semibold">
                   Book Now
                 </Button>

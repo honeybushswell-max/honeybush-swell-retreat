@@ -1,5 +1,6 @@
 import express from "express";
 import path from "path";
+import fs from "fs";
 import { createServer as createViteServer } from "vite";
 import Stripe from "stripe";
 import dotenv from "dotenv";
@@ -8,7 +9,18 @@ dotenv.config();
 
 async function startServer() {
   const app = express();
-  const PORT = process.env.PORT && !isNaN(parseInt(process.env.PORT, 10)) ? parseInt(process.env.PORT, 10) : 3000;
+
+  const isProduction =
+    process.env.NODE_ENV === "production" ||
+    (typeof __filename !== "undefined" && __filename.includes("dist"));
+
+  // In dev sandbox, port 3000 is required by the dev environment proxy.
+  // In Cloud Run production deployment, listen on process.env.PORT (typically 8080).
+  const PORT = !isProduction
+    ? 3000
+    : process.env.PORT && !isNaN(parseInt(process.env.PORT, 10))
+    ? parseInt(process.env.PORT, 10)
+    : 3000;
 
   app.use(express.json());
 
@@ -66,23 +78,42 @@ async function startServer() {
   });
 
   // Vite middleware for dev vs static file serving for production
-  if (process.env.NODE_ENV !== "production") {
+  if (!isProduction) {
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: "spa",
     });
     app.use(vite.middlewares);
   } else {
-    const distPath = path.join(process.cwd(), "dist");
+    const candidatePath1 = path.join(process.cwd(), "dist");
+    const candidatePath2 = typeof __dirname !== "undefined" ? __dirname : candidatePath1;
+    const distPath = fs.existsSync(path.join(candidatePath1, "index.html"))
+      ? candidatePath1
+      : candidatePath2;
+
     app.use(express.static(distPath));
-    app.get("*", (req, res) => {
+    app.get("*", (_req, res) => {
       res.sendFile(path.join(distPath, "index.html"));
     });
   }
 
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server running on port ${PORT}`);
+  const primaryServer = app.listen(PORT, "0.0.0.0", () => {
+    console.log(`Server running on port ${PORT} (isProduction: ${isProduction})`);
   });
+
+  // In production, if Cloud Run assigned a port other than 3000, also bind 3000 as fallback
+  if (isProduction && PORT !== 3000) {
+    try {
+      const secondaryServer = app.listen(3000, "0.0.0.0", () => {
+        console.log("Secondary fallback listener running on port 3000");
+      });
+      secondaryServer.on("error", (err: any) => {
+        console.warn("Secondary listener on port 3000 not available:", err.message);
+      });
+    } catch {
+      // Ignore if port 3000 is occupied
+    }
+  }
 }
 
 startServer().catch((err) => {

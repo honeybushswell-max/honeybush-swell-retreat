@@ -88,7 +88,7 @@ export function Home() {
             {[
               {
                 title: "Lapland, Sweden",
-                date: "August 2026",
+                date: "New dates coming soon",
                 desc: "A soul-deep immersion into the raw silence of the North - the last true wilderness. Beneath the northern lights, experience warming saunas, wild adventures, and grounding rituals in the heart of Swedish Lapland.",
                 img: "tea2.png"
               },

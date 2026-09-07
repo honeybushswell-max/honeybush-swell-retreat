@@ -27,36 +27,46 @@ export function Dates() {
         </div>
 
         {/* Dates */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-32">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-32 max-w-4xl mx-auto">
           {[
             {
               location: "Lapland, Sweden",
               date: "August 26 - 30, 2026",
-              status: "Open",
-              spots: 10,
-              type: "book"
+              status: "Closed for booking",
+              note: "New dates are coming soon",
+              link: "/book?retreat=capetown"
             },
             {
               location: "Cape Town, SA",
               date: "November 18-26, 2026",
               status: "Open",
-              spots: 10,
-              type: "book"
+              note: null,
+              link: "/book?retreat=capetown"
             }
           ].map((retreat, idx) => (
-            <div key={idx} className="bg-sand-dark p-8 rounded-sm border border-sand-dark hover:border-honey/50 transition-colors">
-              <span className="text-honey uppercase tracking-widest text-[10px] font-medium block mb-2">{retreat.location}</span>
-              <h3 className="text-2xl font-serif text-ocean-dark mb-2">{retreat.date}</h3>
-              <p className="text-sm uppercase tracking-widest font-medium mb-6" style={{ color: retreat.spots === 0 ? 'var(--color-sage)' : 'var(--color-honey)' }}>
-                {retreat.status}
-              </p>
-              <Link to={retreat.spots === 0 ? "/contact" : (retreat.location.includes("Cape Town") ? "/book?retreat=capetown" : "/book")}>
+            <div key={idx} className="bg-sand-dark p-8 rounded-sm border border-sand-dark hover:border-honey/50 transition-colors flex flex-col justify-between">
+              <div>
+                <span className="text-honey uppercase tracking-widest text-[10px] font-medium block mb-2">{retreat.location}</span>
+                <h3 className="text-2xl font-serif text-ocean-dark mb-2">{retreat.date}</h3>
+                <p className="text-sm uppercase tracking-widest font-medium mb-1" style={{ color: retreat.status === "Open" ? 'var(--color-honey)' : '#8c766b' }}>
+                  {retreat.status}
+                </p>
+                {retreat.note ? (
+                  <p className="text-xs text-honey font-medium italic mb-6">
+                    {retreat.note}
+                  </p>
+                ) : (
+                  <p className="text-xs text-transparent select-none mb-6">
+                    &nbsp;
+                  </p>
+                )}
+              </div>
+              <Link to={retreat.link} className="mt-auto">
                 <Button
-                  variant={retreat.spots === 0 ? "outline" : "default"}
+                  variant="default"
                   className="w-full uppercase tracking-widest text-xs"
-                  disabled={retreat.spots === 0}
                 >
-                  {retreat.spots === 0 ? "Join Waitlist" : "Book Now"}
+                  Book Now
                 </Button>
               </Link>
             </div>
@@ -69,6 +79,7 @@ export function Dates() {
             <span className="text-honey uppercase tracking-widest text-sm font-medium">Investment</span>
             <h2 className="text-4xl font-serif text-sand mt-4">Retreat Packages</h2>
             <p className="text-sand text-xl font-light mt-4 italic">Lapland, Sweden</p>
+            <p className="text-honey/90 text-sm font-light mt-2 tracking-wide">August retreat is closed for booking — New dates are coming soon</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             <div className="border border-sand/20 p-8 rounded-sm flex flex-col">
@@ -81,9 +92,9 @@ export function Dates() {
                 <li className="flex items-center gap-2"><span className="text-honey">✓</span> All retreat inclusions</li>
                 <li className="flex items-center gap-2"><span className="text-honey">✓</span> Shared bathroom</li>
               </ul>
-              <Link to="/book?room=shared" className="mt-auto">
+              <Link to="/book?retreat=capetown" className="mt-auto">
                 <Button className="w-full bg-honey text-ocean-dark hover:bg-white uppercase tracking-widest text-xs">
-                  Select Shared
+                  Book Cape Town Retreat
                 </Button>
               </Link>
             </div>
@@ -97,9 +108,9 @@ export function Dates() {
                 <li className="flex items-center gap-2"><span className="text-honey">✓</span> All retreat inclusions</li>
                 <li className="flex items-center gap-2"><span className="text-honey">✓</span> Private en-suite bathroom</li>
               </ul>
-              <Link to="/book?room=private" className="mt-auto">
+              <Link to="/book?retreat=capetown" className="mt-auto">
                 <Button className="w-full bg-honey text-ocean-dark hover:bg-white uppercase tracking-widest text-xs">
-                  Select Private
+                  Book Cape Town Retreat
                 </Button>
               </Link>
             </div>
