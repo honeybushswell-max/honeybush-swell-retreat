@@ -4,6 +4,7 @@
  */
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Analytics } from '@vercel/analytics/react';
 import { Layout } from './components/layout/Layout';
 import { Home } from './pages/Home';
 import { About } from './pages/About';
@@ -18,21 +19,24 @@ import { Privacy } from './pages/Privacy';
 
 export default function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="about" element={<About />} />
-          <Route path="experience" element={<Experience />} />
-          <Route path="dates" element={<Dates />} />
-          <Route path="gallery" element={<Gallery />} />
-          <Route path="faq" element={<FAQ />} />
-          <Route path="contact" element={<Contact />} />
-          <Route path="book" element={<Book />} />
-          <Route path="terms" element={<Terms />} />
-          <Route path="privacy" element={<Privacy />} />
-        </Route>
-      </Routes>
-    </Router>
+    <>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="about" element={<About />} />
+            <Route path="experience" element={<Experience />} />
+            <Route path="dates" element={<Dates />} />
+            <Route path="gallery" element={<Gallery />} />
+            <Route path="faq" element={<FAQ />} />
+            <Route path="contact" element={<Contact />} />
+            <Route path="book" element={<Book />} />
+            <Route path="terms" element={<Terms />} />
+            <Route path="privacy" element={<Privacy />} />
+          </Route>
+        </Routes>
+      </Router>
+      <Analytics />
+    </>
   );
 }
