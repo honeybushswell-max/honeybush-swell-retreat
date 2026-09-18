@@ -88,15 +88,21 @@ export function Home() {
             {[
               {
                 title: "Lapland, Sweden",
-                date: "New dates coming soon",
-                desc: "A soul-deep immersion into the raw silence of the North - the last true wilderness. Beneath the northern lights, experience warming saunas, wild adventures, and grounding rituals in the heart of Swedish Lapland.",
-                img: "tea2.png"
+                date: "Summer 2027 · Pre-Registration Open",
+                desc: "A soul-deep immersion into the raw silence of the North - the last true wilderness. Beneath the midnight sun and mountain skies, experience warming saunas, wild adventures, and grounding rituals in the heart of Swedish Lapland.",
+                img: "swedennew.jpg",
+                objectPosition: "object-bottom",
+                link: "/book?retreat=lapland",
+                actionText: "Pre-Register for 2027"
               },
               {
                 title: "Cape Town, South Africa",
                 date: "November 2026",
                 desc: "Our signature surf and soul experience - crystal waters, golden light, nourishing community meals, and the majestic energy of the Cape mountains blending seamlessly with the ocean.",
-                img: "lunch1.jpg"
+                img: "grouppic.jpg",
+                objectPosition: "object-center",
+                link: "/dates",
+                actionText: "Learn More"
               }
             ].map((retreat, idx) => (
               <div key={idx} className="flex flex-col group items-center">
@@ -104,7 +110,7 @@ export function Home() {
                   <img
                     src={retreat.img}
                     alt={retreat.title}
-                    className="w-full h-full object-cover"
+                    className={`w-full h-full object-cover ${retreat.objectPosition || 'object-center'}`}
                     referrerPolicy="no-referrer"
                   />
                 </div>
@@ -112,9 +118,9 @@ export function Home() {
                   <span className="text-[#60483e]/70 uppercase tracking-widest text-xs font-medium mb-2 block">{retreat.date}</span>
                   <h3 className="text-3xl font-serif text-[#60483e] mb-4">{retreat.title}</h3>
                   <p className="text-[#60483e]/80 font-light leading-relaxed max-w-md mx-auto mb-8">{retreat.desc}</p>
-                  <Link to="/dates">
+                  <Link to={retreat.link}>
                     <Button variant="outline" className="uppercase tracking-widest text-xs border-[#60483e]/30 text-[#60483e] hover:bg-[#60483e] hover:text-[#f0ddbe]">
-                      Learn More
+                      {retreat.actionText}
                     </Button>
                   </Link>
                 </div>

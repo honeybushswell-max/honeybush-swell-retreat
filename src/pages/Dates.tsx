@@ -31,24 +31,26 @@ export function Dates() {
           {[
             {
               location: "Lapland, Sweden",
-              date: "August 26 - 30, 2026",
-              status: "Closed for booking",
-              note: "New dates are coming soon",
-              link: "/book?retreat=capetown"
+              date: "Summer 2027",
+              status: "Pre-Registration Open",
+              note: "Pre-register now to receive priority dates & early-bird access",
+              link: "/book?retreat=lapland",
+              buttonText: "Pre-Register for 2027"
             },
             {
               location: "Cape Town, SA",
               date: "November 18-26, 2026",
               status: "Open",
               note: null,
-              link: "/book?retreat=capetown"
+              link: "/book?retreat=capetown",
+              buttonText: "Book Now"
             }
           ].map((retreat, idx) => (
             <div key={idx} className="bg-sand-dark p-8 rounded-sm border border-sand-dark hover:border-honey/50 transition-colors flex flex-col justify-between">
               <div>
                 <span className="text-honey uppercase tracking-widest text-[10px] font-medium block mb-2">{retreat.location}</span>
                 <h3 className="text-2xl font-serif text-ocean-dark mb-2">{retreat.date}</h3>
-                <p className="text-sm uppercase tracking-widest font-medium mb-1" style={{ color: retreat.status === "Open" ? 'var(--color-honey)' : '#8c766b' }}>
+                <p className="text-sm uppercase tracking-widest font-medium mb-1" style={{ color: 'var(--color-honey)' }}>
                   {retreat.status}
                 </p>
                 {retreat.note ? (
@@ -66,7 +68,7 @@ export function Dates() {
                   variant="default"
                   className="w-full uppercase tracking-widest text-xs"
                 >
-                  Book Now
+                  {retreat.buttonText}
                 </Button>
               </Link>
             </div>
@@ -76,41 +78,45 @@ export function Dates() {
         {/* Pricing */}
         <div className="bg-ocean-dark text-sand p-12 md:p-24 rounded-sm mb-12">
           <div className="text-center mb-16">
-            <span className="text-honey uppercase tracking-widest text-sm font-medium">Investment</span>
-            <h2 className="text-4xl font-serif text-sand mt-4">Retreat Packages</h2>
+            <span className="text-honey uppercase tracking-widest text-sm font-medium">Summer 2027</span>
+            <h2 className="text-4xl font-serif text-sand mt-4">Retreat Packages & Pre-Registration</h2>
             <p className="text-sand text-xl font-light mt-4 italic">Lapland, Sweden</p>
-            <p className="text-honey/90 text-sm font-light mt-2 tracking-wide">August retreat is closed for booking — New dates are coming soon</p>
+            <p className="text-honey/90 text-sm font-light mt-2 tracking-wide">Summer 2027 pre-registration is open — Reserve priority access for your preferred room</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             <div className="border border-sand/20 p-8 rounded-sm flex flex-col">
               <h3 className="text-2xl font-serif text-honey mb-2">Shared Room</h3>
-              <p className="text-3xl font-light mb-6">999 EUR</p>
+              <p className="text-3xl font-light mb-1">999 EUR</p>
+              <p className="text-xs text-sand/60 mb-6 font-light">Estimated package price</p>
               <p className="font-light text-sand/80 leading-relaxed mb-8 flex-1">
-                Perfect for solo travelers looking to connect. Share a spacious, room with one other retreat guest. Two twin beds, shared bathroom with other retreat guests.
+                Perfect for solo travelers looking to connect. Share a spacious, cozy room with one other retreat guest. Two twin beds, shared bathroom with other retreat guests.
               </p>
               <ul className="space-y-3 text-sm font-light text-sand/80 mb-8">
                 <li className="flex items-center gap-2"><span className="text-honey">✓</span> All retreat inclusions</li>
                 <li className="flex items-center gap-2"><span className="text-honey">✓</span> Shared bathroom</li>
+                <li className="flex items-center gap-2"><span className="text-honey">✓</span> Priority booking window for Summer 2027</li>
               </ul>
-              <Link to="/book?retreat=capetown" className="mt-auto">
+              <Link to="/book?retreat=lapland&room=shared" className="mt-auto">
                 <Button className="w-full bg-honey text-ocean-dark hover:bg-white uppercase tracking-widest text-xs">
-                  Book Cape Town Retreat
+                  Pre-Register (Shared Room)
                 </Button>
               </Link>
             </div>
             <div className="border border-sand/20 p-8 rounded-sm relative overflow-hidden flex flex-col">
               <h3 className="text-2xl font-serif text-honey mb-2">Private Room</h3>
-              <p className="text-3xl font-light mb-6">1109 EUR</p>
+              <p className="text-3xl font-light mb-1">1109 EUR</p>
+              <p className="text-xs text-sand/60 mb-6 font-light">Estimated package price</p>
               <p className="font-light text-sand/80 leading-relaxed mb-8 flex-1">
                 For those who crave a peaceful sanctuary to return to at the end of each day. A private room with its own en-suite bathroom.
               </p>
               <ul className="space-y-3 text-sm font-light text-sand/80 mb-8">
                 <li className="flex items-center gap-2"><span className="text-honey">✓</span> All retreat inclusions</li>
                 <li className="flex items-center gap-2"><span className="text-honey">✓</span> Private en-suite bathroom</li>
+                <li className="flex items-center gap-2"><span className="text-honey">✓</span> Priority booking window for Summer 2027</li>
               </ul>
-              <Link to="/book?retreat=capetown" className="mt-auto">
+              <Link to="/book?retreat=lapland&room=private" className="mt-auto">
                 <Button className="w-full bg-honey text-ocean-dark hover:bg-white uppercase tracking-widest text-xs">
-                  Book Cape Town Retreat
+                  Pre-Register (Private Room)
                 </Button>
               </Link>
             </div>

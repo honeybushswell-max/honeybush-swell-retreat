@@ -14,13 +14,9 @@ async function startServer() {
     process.env.NODE_ENV === "production" ||
     (typeof __filename !== "undefined" && __filename.includes("dist"));
 
-  // In dev sandbox, port 3000 is required by the dev environment proxy.
-  // In Cloud Run production deployment, listen on process.env.PORT (typically 8080).
-  const PORT = !isProduction
-    ? 3000
-    : process.env.PORT && !isNaN(parseInt(process.env.PORT, 10))
-    ? parseInt(process.env.PORT, 10)
-    : 3000;
+  // Port 3000 is hardcoded by the infrastructure container architecture.
+  // External traffic reaches Nginx on container port 8080, which reverse-proxies to Node on port 3000.
+  const PORT = 3000;
 
   app.use(express.json());
 
@@ -97,23 +93,9 @@ async function startServer() {
     });
   }
 
-  const primaryServer = app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server running on port ${PORT} (isProduction: ${isProduction})`);
+  app.listen(PORT, "0.0.0.0", () => {
+    console.log(`Server running on http://localhost:${PORT} (isProduction: ${isProduction})`);
   });
-
-  // In production, if Cloud Run assigned a port other than 3000, also bind 3000 as fallback
-  if (isProduction && PORT !== 3000) {
-    try {
-      const secondaryServer = app.listen(3000, "0.0.0.0", () => {
-        console.log("Secondary fallback listener running on port 3000");
-      });
-      secondaryServer.on("error", (err: any) => {
-        console.warn("Secondary listener on port 3000 not available:", err.message);
-      });
-    } catch {
-      // Ignore if port 3000 is occupied
-    }
-  }
 }
 
 startServer().catch((err) => {
