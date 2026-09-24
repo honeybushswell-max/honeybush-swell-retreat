@@ -1,7 +1,6 @@
 import express from "express";
 import path from "path";
 import fs from "fs";
-import { createServer as createViteServer } from "vite";
 import Stripe from "stripe";
 import dotenv from "dotenv";
 
@@ -10,13 +9,14 @@ dotenv.config();
 async function startServer() {
   const app = express();
 
-  const isProduction =
-    process.env.NODE_ENV === "production" ||
-    (typeof __filename !== "undefined" && __filename.includes("dist"));
+  const distPath = path.join(process.cwd(), "dist");
+  const hasDist = fs.existsSync(path.join(distPath, "index.html"));
 
-  // Port 3000 is hardcoded by the infrastructure container architecture.
+  // Only run Vite dev middleware if --dev flag is passed or dist does not exist
+  const isDev = process.argv.includes("--dev") || (process.env.NODE_ENV === "development" && !hasDist);
+
   // External traffic reaches Nginx on container port 8080, which reverse-proxies to Node on port 3000.
-  const PORT = 3000;
+  const PORT = Number(process.env.APP_PORT || 3000);
 
   app.use(express.json());
 
@@ -74,19 +74,14 @@ async function startServer() {
   });
 
   // Vite middleware for dev vs static file serving for production
-  if (!isProduction) {
+  if (isDev) {
+    const { createServer: createViteServer } = await import("vite");
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: "spa",
     });
     app.use(vite.middlewares);
   } else {
-    const candidatePath1 = path.join(process.cwd(), "dist");
-    const candidatePath2 = typeof __dirname !== "undefined" ? __dirname : candidatePath1;
-    const distPath = fs.existsSync(path.join(candidatePath1, "index.html"))
-      ? candidatePath1
-      : candidatePath2;
-
     app.use(express.static(distPath));
     app.get("*", (_req, res) => {
       res.sendFile(path.join(distPath, "index.html"));
@@ -94,7 +89,7 @@ async function startServer() {
   }
 
   app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server running on http://localhost:${PORT} (isProduction: ${isProduction})`);
+    console.log(`Server running on http://0.0.0.0:${PORT} (isDev: ${isDev})`);
   });
 }
 
