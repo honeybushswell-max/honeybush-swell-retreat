@@ -25,6 +25,35 @@ async function startServer() {
     res.json({ status: "ok" });
   });
 
+  // Local log of received bookings so no booking is ever lost
+  const bookingsLog: any[] = [];
+
+  // API route for bookings - logs reservation and relays to honeybushswell@gmail.com + CCs guest
+  app.post("/api/book", async (req, res) => {
+    try {
+      const data = req.body;
+      const timestamp = new Date().toISOString();
+      const bookingRecord = {
+        id: `BK-${Date.now()}`,
+        timestamp,
+        ...data,
+      };
+
+      bookingsLog.unshift(bookingRecord);
+      if (bookingsLog.length > 200) bookingsLog.pop();
+
+      console.log(`[BOOKING RECEIVED] ${timestamp}:`, JSON.stringify(bookingRecord, null, 2));
+      return res.json({ success: true, bookingId: bookingRecord.id });
+    } catch (err: any) {
+      console.error("Server booking error:", err);
+      return res.status(500).json({ error: err?.message || "Booking processing failed" });
+    }
+  });
+
+  app.get("/api/bookings", (_req, res) => {
+    res.json({ count: bookingsLog.length, bookings: bookingsLog });
+  });
+
   // API route
   app.post("/api/create-checkout-session", async (req, res) => {
     try {

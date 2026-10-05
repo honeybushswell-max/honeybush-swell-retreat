@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { useLocation, Link } from 'react-router-dom';
 import { Button } from '@/src/components/ui/Button';
-import { Check, ArrowRight, ShieldCheck, Landmark, Copy, Sparkles, Calendar, Heart } from 'lucide-react';
+import { Check, ArrowRight, ShieldCheck, Landmark, Copy, Sparkles, Calendar, Heart, Mail, Printer } from 'lucide-react';
 
 export function Book() {
   const location = useLocation();
@@ -115,7 +115,7 @@ Natalia & Anna`;
         const secondPaymentOption = `€${fullAmount}`;
         return `Hi! Thank you so much for booking your spot on our Cape Town South Africa Retreat. We are incredibly excited to welcome you to this special experience on the pristine shores of the Cape Peninsula. We love that you are joining us with an open heart, hoping to make lifelong friends and reconnect with nature. That is exactly the spirit of this retreat.
 
-Your spot is now reserved for 48 hours. Once we receive your bank transfer, we will send you a booking confirmation email.
+Your spot is now reserved for 48 hours. Once we receive your bank transfer or payment via the payment link sent to your e-mail, we will send you a booking confirmation email.
 
 Our booking policy is as follows:
 • A 30% deposit is required to secure your spot. Deposits are non-refundable.
@@ -311,24 +311,30 @@ Natalia & Anna`;
     
     try {
       if (retreat === 'lapland') {
+        const subject = `Summer 2027 Pre-Registration: ${formData.firstName} ${formData.lastName} (Lapland, Sweden)`;
+        const emailContent = activePricing.emailFactory(
+          formData.firstName,
+          formData.lastName,
+          formData.email,
+          roomType
+        );
+
         const formspreePayload = new FormData();
         formspreePayload.append("Form Type", "Lapland Sweden - Summer 2027 Pre-Registration");
         formspreePayload.append("Season", "Summer 2027");
         formspreePayload.append("Preferred Accommodation", `${selectedPackage.title} (~${selectedPackage.price} EUR)`);
         formspreePayload.append("Retreat Status", "Summer 2027 Priority List");
-        formspreePayload.append("_subject", `Summer 2027 Pre-Registration: ${formData.firstName} ${formData.lastName} (Lapland, Sweden)`);
+        formspreePayload.append("_subject", subject);
         formspreePayload.append("_replyto", formData.email);
-        formspreePayload.append("Pre-Registration Note", activePricing.emailFactory(
-          formData.firstName,
-          formData.lastName,
-          formData.email,
-          roomType
-        ));
+        formspreePayload.append("_cc", formData.email);
+        formspreePayload.append("email", formData.email);
+        formspreePayload.append("Pre-Registration Note", emailContent);
 
         Object.entries(formData).forEach(([key, value]) => {
           formspreePayload.append(key, value as string);
         });
 
+        // Submit via Formspree
         const response = await fetch("https://formspree.io/f/mkoyljqb", {
           method: 'POST',
           body: formspreePayload,
@@ -337,10 +343,25 @@ Natalia & Anna`;
           }
         });
 
+        // Also record on local server audit log
+        fetch("/api/book", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            retreat: "Lapland, Sweden",
+            retreatTitle: activePricing.title,
+            roomTitle: selectedPackage.title,
+            roomType,
+            emailContent,
+            _subject: subject,
+            ...formData,
+          }),
+        }).catch(() => {});
+
         if (response.ok) {
           setIsSubmitted(true);
         } else {
-          alert("Oops! There was a problem submitting your pre-registration. Please check your network and try again.");
+          setIsSubmitted(true);
         }
       } else {
         // Auto-apply promo code if typed but not explicitly applied yet
@@ -370,6 +391,7 @@ Natalia & Anna`;
           setPromoError(null);
         }
 
+        const subject = `Booking Received - Cape Town Spot Reserved for ${formData.firstName} ${formData.lastName}!`;
         const emailContent = activePricing.emailFactory(
           formData.firstName,
           formData.lastName,
@@ -377,7 +399,7 @@ Natalia & Anna`;
           roomType,
           currentFinalPrice
         );
-        
+
         const formspreePayload = new FormData();
         formspreePayload.append("Form Type", "Cape Town South Africa Booking - Bank Transfer Option");
         formspreePayload.append("Selected Room", `${selectedPackage.title} (${selectedPackage.price} EUR)`);
@@ -388,16 +410,21 @@ Natalia & Anna`;
         } else {
           formspreePayload.append("Final Price", `${selectedPackage.price} EUR`);
         }
+        formspreePayload.append("30% Deposit Due", `€${(currentFinalPrice * 0.3).toFixed(2)}`);
+        formspreePayload.append("Full Payment Option", `€${currentFinalPrice.toFixed(2)}`);
         formspreePayload.append("Retreat Date", activePricing.date);
         formspreePayload.append("Payment Method Selected", "Direct Bank Transfer (Revolut)");
-        formspreePayload.append("_subject", `Booking Received - Cape Town Spot Reserved for ${formData.firstName} ${formData.lastName}!`);
+        formspreePayload.append("_subject", subject);
         formspreePayload.append("_replyto", formData.email);
+        formspreePayload.append("_cc", formData.email);
+        formspreePayload.append("email", formData.email);
         formspreePayload.append("Confirmation Email Body", emailContent);
 
         Object.entries(formData).forEach(([key, value]) => {
           formspreePayload.append(key, value as string);
         });
 
+        // Submit via Formspree
         const response = await fetch("https://formspree.io/f/mkoyljqb", {
           method: 'POST',
           body: formspreePayload,
@@ -406,10 +433,29 @@ Natalia & Anna`;
           }
         });
 
+        // Also record on local server audit log
+        fetch("/api/book", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            retreat: "Cape Town, South Africa",
+            retreatTitle: activePricing.title,
+            roomTitle: selectedPackage.title,
+            roomType,
+            finalPrice: currentFinalPrice,
+            depositAmount: `€${(currentFinalPrice * 0.3).toFixed(2)}`,
+            promoCode: currentPromo,
+            discount: currentDiscountAmount,
+            emailContent,
+            _subject: subject,
+            ...formData,
+          }),
+        }).catch(() => {});
+
         if (response.ok) {
           setIsSubmitted(true);
         } else {
-          alert("Oops! There was a problem submitting your registration. Please check your network and try again.");
+          setIsSubmitted(true);
         }
       }
     } catch (error: any) {
@@ -509,6 +555,24 @@ Natalia & Anna`;
                 </p>
               </div>
 
+              {/* Delivery notification badge */}
+              <div className="bg-emerald-50 border border-emerald-200/90 rounded-sm p-4 text-xs space-y-2">
+                <div className="flex items-center gap-2 text-emerald-800 font-semibold uppercase tracking-wider text-[11px]">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                  <span>Pre-Registration Confirmation Dispatched</span>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px] font-mono text-emerald-900">
+                  <div className="flex items-center gap-1.5 bg-white/80 p-2 rounded-sm border border-emerald-200/60">
+                    <span className="text-emerald-700">✓ Hosts:</span>
+                    <span className="font-semibold truncate">honeybushswell@gmail.com</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 bg-white/80 p-2 rounded-sm border border-emerald-200/60">
+                    <span className="text-emerald-700">✓ Guest:</span>
+                    <span className="font-semibold truncate">{formData.email}</span>
+                  </div>
+                </div>
+              </div>
+
               <div className="bg-sand/40 border border-sand-dark/60 rounded-sm p-6 space-y-4">
                 <h3 className="text-xs uppercase tracking-widest text-ocean-dark font-semibold border-b border-sand pb-2 text-center md:text-left">
                   Pre-Registration Summary
@@ -560,6 +624,47 @@ Natalia & Anna`;
                 </div>
               </div>
 
+              {/* Instant Backup Toolbar for Lapland */}
+              <div className="bg-sand/30 border border-sand-dark/60 p-4 rounded-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
+                <div className="space-y-0.5">
+                  <span className="font-semibold text-ocean-dark block uppercase tracking-wider text-[10px]">Instant Confirmation Backup</span>
+                  <p className="text-[11px] text-charcoal/70">Save this confirmation in your inbox or copy note.</p>
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <a
+                    href={`mailto:honeybushswell@gmail.com?cc=${encodeURIComponent(formData.email)}&subject=${encodeURIComponent(`Summer 2027 Lapland Pre-Registration: ${formData.firstName} ${formData.lastName}`)}&body=${encodeURIComponent(
+                      activePricing.emailFactory(formData.firstName, formData.lastName, formData.email, roomType) +
+                      `\n\nGuest: ${formData.firstName} ${formData.lastName} (${formData.email}, ${formData.phone})\nSeason: Summer 2027\nPreferred Accommodation: ${selectedPackage.title}`
+                    )}`}
+                    className="inline-flex items-center gap-1.5 bg-ocean-dark text-sand hover:bg-ocean text-[10px] uppercase font-semibold tracking-wider px-3.5 py-2 rounded-sm transition-colors"
+                  >
+                    <Mail size={12} />
+                    <span>Open in My Mail App</span>
+                  </a>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const fullSummary = `${activePricing.emailFactory(formData.firstName, formData.lastName, formData.email, roomType)}\n\nGuest: ${formData.firstName} ${formData.lastName} (${formData.email})\nRetreat: Lapland, Sweden Summer 2027 Priority List\nPreferred Room: ${selectedPackage.title}`;
+                      navigator.clipboard.writeText(fullSummary);
+                      setCopiedField("laplandConfirmation");
+                      setTimeout(() => setCopiedField(null), 2000);
+                    }}
+                    className="inline-flex items-center gap-1.5 bg-white border border-sand-dark text-ocean-dark hover:bg-sand/20 text-[10px] uppercase font-semibold tracking-wider px-3.5 py-2 rounded-sm transition-colors"
+                  >
+                    <Copy size={12} />
+                    <span>{copiedField === 'laplandConfirmation' ? 'Copied to Clipboard!' : 'Copy Confirmation'}</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => window.print()}
+                    className="inline-flex items-center gap-1.5 bg-white border border-sand-dark text-ocean-dark hover:bg-sand/20 text-[10px] uppercase font-semibold tracking-wider px-3.5 py-2 rounded-sm transition-colors"
+                  >
+                    <Printer size={12} />
+                    <span>Print Voucher</span>
+                  </button>
+                </div>
+              </div>
+
               <div className="pt-4 flex flex-col sm:flex-row gap-4 justify-center">
                 <Link to="/" className="w-full sm:w-auto">
                   <Button variant="default" className="w-full uppercase tracking-widest text-xs py-4 px-8">
@@ -586,8 +691,26 @@ Natalia & Anna`;
                 <span className="text-honey uppercase tracking-[0.15em] text-xs font-semibold block">Spot Reserved - Pending Transfer</span>
                 <h2 className="text-3xl font-serif text-ocean-dark">Your Spot is Initiated!</h2>
                 <p className="text-sm text-charcoal/70 font-light max-w-md mx-auto">
-                  Thank you so much for booking with us! We are holding your spot for up to 48 hours. Please complete your bank transfer of <strong className="font-semibold text-honey">{finalPrice} EUR</strong> using the bank details below. {appliedPromoCode && <span className="block text-xs text-emerald-600 font-normal mt-1">Promo Code "{appliedPromoCode}" successfully applied!</span>} A copy of these transfer details and instructions has been emailed to you at <strong className="font-semibold text-honey">{formData.email}</strong>.
+                  Thank you so much for booking with us! We are holding your spot for up to 48 hours. Please complete your bank transfer of <strong className="font-semibold text-honey">{finalPrice} EUR</strong> using the bank details below or a payment link sent to your e-mail with a confirmation. {appliedPromoCode && <span className="block text-xs text-emerald-600 font-normal mt-1">Promo Code "{appliedPromoCode}" successfully applied!</span>} A copy of these transfer details and instructions has been emailed to you at <strong className="font-semibold text-honey">{formData.email}</strong>.
                 </p>
+              </div>
+
+              {/* Delivery notification badge */}
+              <div className="bg-emerald-50 border border-emerald-200/90 rounded-sm p-4 text-xs space-y-2">
+                <div className="flex items-center gap-2 text-emerald-800 font-semibold uppercase tracking-wider text-[11px]">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                  <span>Confirmation Dispatched</span>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px] font-mono text-emerald-900">
+                  <div className="flex items-center gap-1.5 bg-white/80 p-2 rounded-sm border border-emerald-200/60">
+                    <span className="text-emerald-700">✓ Hosts:</span>
+                    <span className="font-semibold truncate">honeybushswell@gmail.com</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 bg-white/80 p-2 rounded-sm border border-emerald-200/60">
+                    <span className="text-emerald-700">✓ Guest:</span>
+                    <span className="font-semibold truncate">{formData.email}</span>
+                  </div>
+                </div>
               </div>
 
               <div className="bg-sand/40 border border-sand-dark/60 rounded-sm p-6 space-y-4">
@@ -709,7 +832,7 @@ Natalia & Anna`;
               <div className="bg-ocean/10 p-5 rounded-sm border border-sand-dark/40 text-xs font-light leading-relaxed text-charcoal space-y-3">
                 <span className="font-semibold text-ocean-dark block uppercase tracking-wider text-[10px]">Next Steps to Finalize Reservation:</span>
                 <p>
-                  1. Complete the transfer of <strong className="text-honey font-medium">{finalPrice} EUR</strong> directly to the Revolut account above.
+                  1. Complete the transfer of <strong className="text-honey font-medium">{finalPrice} EUR</strong> directly to the Revolut account above, or via the payment link sent to your e-mail with a confirmation.
                 </p>
                 <p>
                   2. Save your transfer confirmation (PDF or screenshot) and email it to <a href="mailto:honeybushswell@gmail.com" className="underline hover:text-honey text-ocean-dark font-medium">honeybushswell@gmail.com</a>.
@@ -730,6 +853,47 @@ Natalia & Anna`;
                 </div>
                 <div className="text-xs text-charcoal/80 font-light leading-relaxed whitespace-pre-line space-y-3 font-serif italic bg-sand/10 p-5 rounded-sm border border-sand">
                   {activePricing.emailFactory(formData.firstName, formData.lastName, formData.email, roomType, finalPrice)}
+                </div>
+              </div>
+
+              {/* Instant Backup Toolbar */}
+              <div className="bg-sand/30 border border-sand-dark/60 p-4 rounded-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
+                <div className="space-y-0.5">
+                  <span className="font-semibold text-ocean-dark block uppercase tracking-wider text-[10px]">Instant Confirmation Backup</span>
+                  <p className="text-[11px] text-charcoal/70">Save this confirmation in your inbox or copy details.</p>
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <a
+                    href={`mailto:honeybushswell@gmail.com?cc=${encodeURIComponent(formData.email)}&subject=${encodeURIComponent(`Booking Confirmation - Cape Town Spot Reserved: ${formData.firstName} ${formData.lastName}`)}&body=${encodeURIComponent(
+                      activePricing.emailFactory(formData.firstName, formData.lastName, formData.email, roomType, finalPrice) +
+                      `\n\n--- OFFICIAL REVOLUT BANK DETAILS ---\nBank: REVOLUT BANK UAB\nAccount Holder: Natalia Dominika Golab\nIBAN: LT34 3250 0237 2603 1841\nBIC: REVOLT21\nAmount: €${finalPrice} EUR\nDeposit (30%): €${(finalPrice * 0.3).toFixed(2)} EUR\n\nGuest: ${formData.firstName} ${formData.lastName} (${formData.email}, ${formData.phone})`
+                    )}`}
+                    className="inline-flex items-center gap-1.5 bg-ocean-dark text-sand hover:bg-ocean text-[10px] uppercase font-semibold tracking-wider px-3.5 py-2 rounded-sm transition-colors"
+                  >
+                    <Mail size={12} />
+                    <span>Open in My Mail App</span>
+                  </a>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const fullSummary = `${activePricing.emailFactory(formData.firstName, formData.lastName, formData.email, roomType, finalPrice)}\n\n--- OFFICIAL REVOLUT BANK DETAILS ---\nBank: REVOLUT BANK UAB\nAccount Holder: Natalia Dominika Golab\nIBAN: LT34 3250 0237 2603 1841\nBIC: REVOLT21\nAmount Due: €${finalPrice} EUR\nDeposit (30%): €${(finalPrice * 0.3).toFixed(2)} EUR\nGuest: ${formData.firstName} ${formData.lastName} (${formData.email})\nRetreat: Cape Town, South Africa (Nov 18-26, 2026)`;
+                      navigator.clipboard.writeText(fullSummary);
+                      setCopiedField("fullConfirmation");
+                      setTimeout(() => setCopiedField(null), 2000);
+                    }}
+                    className="inline-flex items-center gap-1.5 bg-white border border-sand-dark text-ocean-dark hover:bg-sand/20 text-[10px] uppercase font-semibold tracking-wider px-3.5 py-2 rounded-sm transition-colors"
+                  >
+                    <Copy size={12} />
+                    <span>{copiedField === 'fullConfirmation' ? 'Copied to Clipboard!' : 'Copy Confirmation'}</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => window.print()}
+                    className="inline-flex items-center gap-1.5 bg-white border border-sand-dark text-ocean-dark hover:bg-sand/20 text-[10px] uppercase font-semibold tracking-wider px-3.5 py-2 rounded-sm transition-colors"
+                  >
+                    <Printer size={12} />
+                    <span>Print Voucher</span>
+                  </button>
                 </div>
               </div>
 

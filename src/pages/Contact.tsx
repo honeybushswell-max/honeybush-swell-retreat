@@ -23,6 +23,11 @@ export function Contact() {
     
     const form = e.currentTarget;
     const formData = new FormData(form);
+    const senderEmail = (formData.get("email") as string) || "";
+    if (senderEmail) {
+      formData.append("_cc", senderEmail);
+      formData.append("_replyto", senderEmail);
+    }
     
     try {
       const response = await fetch("https://formspree.io/f/mkoyljqb", {
