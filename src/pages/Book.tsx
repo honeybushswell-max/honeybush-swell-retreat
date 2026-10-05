@@ -178,6 +178,9 @@ Natalia & Anna`;
       if (promoParam === '5NIGHTSWITHUS' && activeRetreat === 'capetown') {
         setAppliedPromoCode('5NIGHTSWITHUS');
         setPromoSuccess('Promo code "5NIGHTSWITHUS" applied! Special rate: €850 (Triple Ocean View) / €920 (Double Quiet Oasis).');
+      } else if (promoParam === '10LESSHONEY' && activeRetreat === 'capetown') {
+        setAppliedPromoCode('10LESSHONEY');
+        setPromoSuccess('Promo code "10LESSHONEY" applied! 10% discount has been activated.');
       } else if (promoParam === 'HELLOCAPETOWN10' && activeRetreat === 'capetown') {
         setAppliedPromoCode('HELLOCAPETOWN10');
         setPromoSuccess('Promo code "HELLOCAPETOWN10" applied! 10% discount has been activated.');
@@ -222,7 +225,7 @@ Natalia & Anna`;
       finalPrice = 920;
       discountAmount = Math.max(0, selectedPackage.price - 920);
     }
-  } else if (appliedPromoCode === 'HELLOCAPETOWN10' && retreat === 'capetown') {
+  } else if ((appliedPromoCode === '10LESSHONEY' || appliedPromoCode === 'HELLOCAPETOWN10') && retreat === 'capetown') {
     discountAmount = Math.round(selectedPackage.price * 0.10);
     finalPrice = selectedPackage.price - discountAmount;
   } else if (appliedPromoCode === 'LAPLANDPILATES' && retreat === 'lapland') {
@@ -250,14 +253,14 @@ Natalia & Anna`;
         setPromoSuccess('Promo code "5NIGHTSWITHUS" applied! Special rate activated: €850 for Triple Ocean View / €920 for Double Quiet Oasis.');
         setPromoError(null);
       }
-    } else if (code === 'HELLOCAPETOWN10') {
+    } else if (code === '10LESSHONEY' || code === 'HELLOCAPETOWN10') {
       if (retreat !== 'capetown') {
         setPromoError('This promo code is only valid for the Cape Town, South Africa retreat.');
         setPromoSuccess(null);
         setAppliedPromoCode(null);
       } else {
-        setAppliedPromoCode('HELLOCAPETOWN10');
-        setPromoSuccess('Promo code "HELLOCAPETOWN10" applied! 10% discount has been activated.');
+        setAppliedPromoCode(code);
+        setPromoSuccess(`Promo code "${code}" applied! 10% discount has been activated.`);
         setPromoError(null);
       }
     } else if (code === 'LAPLANDPILATES') {
@@ -358,12 +361,12 @@ Natalia & Anna`;
           setAppliedPromoCode('5NIGHTSWITHUS');
           setPromoSuccess('Promo code "5NIGHTSWITHUS" applied! Special rate activated: €850 for Triple Ocean View / €920 for Double Quiet Oasis.');
           setPromoError(null);
-        } else if (!appliedPromoCode && potentialCode === 'HELLOCAPETOWN10') {
-          currentPromo = 'HELLOCAPETOWN10';
+        } else if (!appliedPromoCode && (potentialCode === '10LESSHONEY' || potentialCode === 'HELLOCAPETOWN10')) {
+          currentPromo = potentialCode;
           currentDiscountAmount = Math.round(selectedPackage.price * 0.10);
           currentFinalPrice = selectedPackage.price - currentDiscountAmount;
-          setAppliedPromoCode('HELLOCAPETOWN10');
-          setPromoSuccess('Promo code "HELLOCAPETOWN10" applied! 10% discount has been activated.');
+          setAppliedPromoCode(potentialCode);
+          setPromoSuccess(`Promo code "${potentialCode}" applied! 10% discount has been activated.`);
           setPromoError(null);
         }
 
@@ -792,7 +795,7 @@ Natalia & Anna`;
                               <span className="text-sm line-through text-charcoal/40 font-mono">{item.price} EUR</span>
                               <span className="text-2xl font-light text-honey font-mono">{key === 'triple' ? 850 : 920} EUR</span>
                             </div>
-                          ) : appliedPromoCode === 'HELLOCAPETOWN10' && retreat === 'capetown' ? (
+                          ) : (appliedPromoCode === '10LESSHONEY' || appliedPromoCode === 'HELLOCAPETOWN10') && retreat === 'capetown' ? (
                             <div className="flex items-baseline gap-2">
                               <span className="text-sm line-through text-charcoal/40 font-mono">{item.price} EUR</span>
                               <span className="text-2xl font-light text-honey font-mono">{Math.round(item.price * 0.9)} EUR</span>
@@ -970,7 +973,7 @@ Natalia & Anna`;
                           <span className="text-[10px] text-emerald-600 font-medium uppercase tracking-wider">
                             {appliedPromoCode === '5NIGHTSWITHUS'
                               ? '5-Night Special Rate Applied'
-                              : appliedPromoCode === 'HELLOCAPETOWN10'
+                              : (appliedPromoCode === '10LESSHONEY' || appliedPromoCode === 'HELLOCAPETOWN10')
                               ? '10% Off Applied'
                               : 'Discount Applied'}
                           </span>
@@ -1093,7 +1096,7 @@ Natalia & Anna`;
                       <div>
                         <span className="block font-semibold text-honey">Promo Code applied:</span>
                         <span className="font-mono text-[10px]">
-                          {appliedPromoCode} {appliedPromoCode === '5NIGHTSWITHUS' ? '(Special 5-Night Rate)' : appliedPromoCode === 'HELLOCAPETOWN10' ? '(10% Off)' : ''}
+                          {appliedPromoCode} {appliedPromoCode === '5NIGHTSWITHUS' ? '(Special 5-Night Rate)' : (appliedPromoCode === '10LESSHONEY' || appliedPromoCode === 'HELLOCAPETOWN10') ? '(10% Off)' : ''}
                         </span>
                       </div>
                       <span className="text-honey font-medium font-mono">-{discountAmount} EUR</span>
