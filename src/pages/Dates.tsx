@@ -39,9 +39,9 @@ export function Dates() {
             },
             {
               location: "Cape Town, SA",
-              date: "November 18-26, 2026",
+              date: "April 7-15, 2027",
               status: "Open",
-              note: null,
+              note: "Our signature retreat, 4th edition",
               link: "/book?retreat=capetown",
               buttonText: "Book Now"
             }
@@ -133,7 +133,7 @@ export function Dates() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             <div className="border border-sand/20 p-8 rounded-sm flex flex-col">
               <h3 className="text-2xl font-serif text-honey mb-2">Triple Ocean View Room</h3>
-              <p className="text-3xl font-light mb-6">1500 EUR</p>
+              <p className="text-3xl font-light mb-6">1550 EUR</p>
               <p className="font-light text-sand/80 leading-relaxed mb-8 flex-1">
                 Share a beautiful, spacious oceanfront room with scenic ocean views with two other retreat guests. Three single beds, shared bathroom. Perfect for solo travelers wanting to connect!
               </p>
@@ -149,7 +149,7 @@ export function Dates() {
             </div>
             <div className="border border-sand/20 p-8 rounded-sm relative overflow-hidden flex flex-col">
               <h3 className="text-2xl font-serif text-honey mb-2">Double Quiet Oasis Room</h3>
-              <p className="text-3xl font-light mb-6">1650 EUR</p>
+              <p className="text-3xl font-light mb-6">1700 EUR</p>
               <p className="font-light text-sand/80 leading-relaxed mb-8 flex-1">
                 For those looking for a tranquil, comfortable oasis. Share a peaceful quiet oasis room with one other retreat guest. Two twin beds, shared bathroom.
               </p>

@@ -171,8 +171,8 @@ export function Contact() {
                     required
                   >
                     <option value="" disabled>Select a date...</option>
-                    <option value="August 2026">August 2026</option>
-                    <option value="November 2026">November 2026</option>
+                    <option value="April 7–15, 2027 (Cape Town)">April 7–15, 2027 (Cape Town, South Africa)</option>
+                    <option value="Summer 2027 (Lapland)">Summer 2027 (Lapland, Sweden)</option>
                   </select>
                 </div>
               </div>

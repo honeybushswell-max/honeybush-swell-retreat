@@ -192,6 +192,10 @@ export function Experience() {
                     </li>
                     <li className="flex items-start gap-3">
                       <span className="text-honey mt-1">✦</span>
+                      <span>Guided Table Mountain National Park hike</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="text-honey mt-1">✦</span>
                       <span>5 yoga sessions and a restorative breathwork experience</span>
                     </li>
                     <li className="flex items-start gap-3">

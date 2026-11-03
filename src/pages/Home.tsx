@@ -84,7 +84,7 @@ export function Home() {
             <h2 className="text-4xl md:text-5xl font-serif text-[#60483e] mt-4">Upcoming Retreats</h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-16 items-stretch">
             {[
               {
                 title: "Lapland, Sweden",
@@ -97,16 +97,16 @@ export function Home() {
               },
               {
                 title: "Cape Town, South Africa",
-                date: "November 2026",
-                desc: "Our signature surf and soul experience - crystal waters, golden light, nourishing community meals, and the majestic energy of the Cape mountains blending seamlessly with the ocean.",
+                date: "April 7–15, 2027 · Booking Open",
+                desc: "Our signature surf and soul experience - crystal waters, golden light, nourishing community meals, and the majestic energy of the Cape mountains blending seamlessly with the ocean. Now in its 4th edition!",
                 img: "grouppic.jpg",
                 objectPosition: "object-center",
-                link: "/dates",
-                actionText: "Learn More"
+                link: "/book?retreat=capetown",
+                actionText: "Book Now"
               }
             ].map((retreat, idx) => (
-              <div key={idx} className="flex flex-col group items-center">
-                <div className="overflow-hidden aspect-[3/2] w-full max-w-md mb-8">
+              <div key={idx} className="flex flex-col group items-center h-full">
+                <div className="overflow-hidden aspect-[3/2] w-full max-w-md mb-8 flex-shrink-0">
                   <img
                     src={retreat.img}
                     alt={retreat.title}
@@ -114,11 +114,11 @@ export function Home() {
                     referrerPolicy="no-referrer"
                   />
                 </div>
-                <div className="text-center">
+                <div className="text-center flex flex-col flex-1 w-full max-w-md items-center">
                   <span className="text-[#60483e]/70 uppercase tracking-widest text-xs font-medium mb-2 block">{retreat.date}</span>
                   <h3 className="text-3xl font-serif text-[#60483e] mb-4">{retreat.title}</h3>
-                  <p className="text-[#60483e]/80 font-light leading-relaxed max-w-md mx-auto mb-8">{retreat.desc}</p>
-                  <Link to={retreat.link}>
+                  <p className="text-[#60483e]/80 font-light leading-relaxed mx-auto mb-8 flex-1">{retreat.desc}</p>
+                  <Link to={retreat.link} className="mt-auto">
                     <Button variant="outline" className="uppercase tracking-widest text-xs border-[#60483e]/30 text-[#60483e] hover:bg-[#60483e] hover:text-[#f0ddbe]">
                       {retreat.actionText}
                     </Button>
@@ -274,12 +274,14 @@ export function Home() {
           >
             {/* Flat list for perfectly even spacing */}
             {[...Array(2)].map((_, i) => (
-              ["2.png", "3.png", "4.png", "5.png", "6.png", "7.png"].map((logo, idx) => (
+              ["2.png", "3.png", "4.png", "5.png", "6.png", "7.png", "b2b.png"].map((logo, idx) => (
                 <img 
                   key={`${i}-${idx}`} 
                   src={logo} 
                   alt="Partner Logo" 
-                  className="h-20 md:h-24 w-auto object-contain flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300"
+                  className={`${
+                    logo === "b2b.png" ? "h-14 md:h-18" : "h-20 md:h-24"
+                  } w-auto object-contain flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300`}
                   referrerPolicy="no-referrer"
                 />
               ))

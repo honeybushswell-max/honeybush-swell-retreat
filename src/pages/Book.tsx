@@ -79,17 +79,17 @@ Natalia & Anna`;
     },
     capetown: {
       title: "Cape Town, South Africa",
-      date: "November 18 - 26, 2026",
+      date: "April 7 - 15, 2027",
       spacesLeft: 10,
       options: {
         triple: {
           title: "Triple Ocean View Room",
-          price: 1500,
+          price: 1550,
           desc: "Share a beautiful, spacious oceanfront room with scenic ocean views with two other retreat guests. Three single beds, shared bathroom."
         },
         double: {
           title: "Double Quiet Oasis Room",
-          price: 1650,
+          price: 1700,
           desc: "Share a tranquil, comfortable oasis room with one other retreat guest. Two twin beds, shared bathroom."
         }
       } as Record<string, { title: string; price: number; desc: string }>,
@@ -97,6 +97,7 @@ Natalia & Anna`;
         "8 nights in a beautiful oceanfront villa with breathtaking views and direct access to the ocean",
         "5 professionally guided surf coaching sessions for all levels, including surfboard and wetsuit rental. If ocean conditions are unsuitable, sessions will be replaced with scenic hikes",
         "Guided waterfall hike through some of the Cape's most stunning natural landscapes",
+        "Guided Table Mountain National Park hike",
         "5 yoga sessions and a restorative breathwork experience",
         "Nourishing chef-prepared meals, including daily breakfasts and dinners, crafted with fresh local ingredients (excluding dinners during our Cape Peninsula weekend adventures)",
         "2 workshops: Women's Circle & Cacao Ceremony and Traditional Beading Workshop with a local artist",
@@ -108,7 +109,7 @@ Natalia & Anna`;
       ],
       emailFactory: (fName: string, lName: string, email: string, rType: string, customPrice?: number) => {
         const isTriple = rType === 'triple';
-        const basePrice = customPrice !== undefined ? customPrice : (isTriple ? 1500 : 1650);
+        const basePrice = customPrice !== undefined ? customPrice : (isTriple ? 1550 : 1700);
         const depositAmount = (basePrice * 0.3).toFixed(2);
         const fullAmount = basePrice.toFixed(2);
         const firstPaymentOption = `€${depositAmount}`;
@@ -120,7 +121,7 @@ Your spot is now reserved for 48 hours. Once we receive your bank transfer or pa
 Our booking policy is as follows:
 • A 30% deposit is required to secure your spot. Deposits are non-refundable.
 • You may also choose to pay the full amount at the time of booking.
-• Full payment for all bookings is due two months before the retreat start date, which is 18 September.
+• Full payment for all bookings is due two months before the retreat start date, which is 7 February 2027.
 
 The payment options are:
 • 30% deposit: ${firstPaymentOption}
@@ -555,7 +556,7 @@ Natalia & Anna`;
                   : 'bg-white/70 text-ocean-dark/70 hover:bg-white border border-sand-dark/60'
               }`}
             >
-              Cape Town, SA · Nov 18–26, 2026 (Booking Open)
+              Cape Town, SA · April 7–15, 2027 (Booking Open)
             </button>
           </div>
         </div>
@@ -899,7 +900,7 @@ Natalia & Anna`;
                   <button
                     type="button"
                     onClick={() => {
-                      const fullSummary = `${activePricing.emailFactory(formData.firstName, formData.lastName, formData.email, roomType, finalPrice)}\n\n--- OFFICIAL REVOLUT BANK DETAILS ---\nBank: REVOLUT BANK UAB\nAccount Holder: Natalia Dominika Golab\nIBAN: LT34 3250 0237 2603 1841\nBIC: REVOLT21\nAmount Due: €${finalPrice} EUR\nDeposit (30%): €${(finalPrice * 0.3).toFixed(2)} EUR\nGuest: ${formData.firstName} ${formData.lastName} (${formData.email})\nRetreat: Cape Town, South Africa (Nov 18-26, 2026)`;
+                      const fullSummary = `${activePricing.emailFactory(formData.firstName, formData.lastName, formData.email, roomType, finalPrice)}\n\n--- OFFICIAL REVOLUT BANK DETAILS ---\nBank: REVOLUT BANK UAB\nAccount Holder: Natalia Dominika Golab\nIBAN: LT34 3250 0237 2603 1841\nBIC: REVOLT21\nAmount Due: €${finalPrice} EUR\nDeposit (30%): €${(finalPrice * 0.3).toFixed(2)} EUR\nGuest: ${formData.firstName} ${formData.lastName} (${formData.email})\nRetreat: Cape Town, South Africa (April 7-15, 2027)`;
                       navigator.clipboard.writeText(fullSummary);
                       setCopiedField("fullConfirmation");
                       setTimeout(() => setCopiedField(null), 2000);
