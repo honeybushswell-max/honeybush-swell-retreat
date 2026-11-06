@@ -84,13 +84,18 @@ Natalia & Anna`;
       options: {
         triple: {
           title: "Triple Ocean View Room",
-          price: 1550,
+          price: 1600,
           desc: "Share a beautiful, spacious oceanfront room with scenic ocean views with two other retreat guests. Three single beds, shared bathroom."
         },
         double: {
           title: "Double Quiet Oasis Room",
           price: 1700,
           desc: "Share a tranquil, comfortable oasis room with one other retreat guest. Two twin beds, shared bathroom."
+        },
+        private: {
+          title: "Cosy Private Room",
+          price: 2000,
+          desc: "A cosy private room featuring an authentic indoor fireplace for ultimate warmth, comfort, privacy, and peaceful relaxation."
         }
       } as Record<string, { title: string; price: number; desc: string }>,
       inclusions: [
@@ -108,8 +113,10 @@ Natalia & Anna`;
         "A thoughtfully curated goodie bag"
       ],
       emailFactory: (fName: string, lName: string, email: string, rType: string, customPrice?: number) => {
-        const isTriple = rType === 'triple';
-        const basePrice = customPrice !== undefined ? customPrice : (isTriple ? 1550 : 1700);
+        let defaultBasePrice = 1600;
+        if (rType === 'double') defaultBasePrice = 1700;
+        else if (rType === 'private') defaultBasePrice = 2000;
+        const basePrice = customPrice !== undefined ? customPrice : defaultBasePrice;
         const depositAmount = (basePrice * 0.3).toFixed(2);
         const fullAmount = basePrice.toFixed(2);
         const firstPaymentOption = `€${depositAmount}`;
@@ -159,7 +166,7 @@ Natalia & Anna`;
     setPromoSuccess(null);
 
     if (activeRetreat === 'capetown') {
-      if (roomParam === 'triple' || roomParam === 'double') {
+      if (roomParam === 'triple' || roomParam === 'double' || roomParam === 'private') {
         setRoomType(roomParam);
       } else {
         setRoomType('triple');
@@ -225,9 +232,12 @@ Natalia & Anna`;
     if (roomType === 'triple') {
       finalPrice = 850;
       discountAmount = Math.max(0, selectedPackage.price - 850);
-    } else {
+    } else if (roomType === 'double') {
       finalPrice = 920;
       discountAmount = Math.max(0, selectedPackage.price - 920);
+    } else {
+      finalPrice = 1250;
+      discountAmount = Math.max(0, selectedPackage.price - 1250);
     }
   } else if (appliedPromoCode === 'SEEYOUINCT' && retreat === 'capetown') {
     discountAmount = Math.round(selectedPackage.price * 0.50);
@@ -392,9 +402,12 @@ Natalia & Anna`;
           if (roomType === 'triple') {
             currentFinalPrice = 850;
             currentDiscountAmount = Math.max(0, selectedPackage.price - 850);
-          } else {
+          } else if (roomType === 'double') {
             currentFinalPrice = 920;
             currentDiscountAmount = Math.max(0, selectedPackage.price - 920);
+          } else {
+            currentFinalPrice = 1250;
+            currentDiscountAmount = Math.max(0, selectedPackage.price - 1250);
           }
           setAppliedPromoCode('5NIGHTSWITHUS');
           setPromoSuccess('Promo code "5NIGHTSWITHUS" applied! Special rate activated: €850 for Triple Ocean View / €920 for Double Quiet Oasis.');
@@ -953,7 +966,7 @@ Natalia & Anna`;
                     </span>
                   )}
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className={`grid grid-cols-1 ${retreat === 'capetown' ? 'sm:grid-cols-2 lg:grid-cols-3' : 'md:grid-cols-2'} gap-4`}>
                   
                   {Object.entries(activePricing.options).map(([key, rawItem], idx) => {
                     const item = rawItem as { title: string; price: number; desc: string };
@@ -981,7 +994,7 @@ Natalia & Anna`;
                           ) : appliedPromoCode === '5NIGHTSWITHUS' && retreat === 'capetown' ? (
                             <div className="flex items-baseline gap-2">
                               <span className="text-sm line-through text-charcoal/40 font-mono">{item.price} EUR</span>
-                              <span className="text-2xl font-light text-honey font-mono">{key === 'triple' ? 850 : 920} EUR</span>
+                              <span className="text-2xl font-light text-honey font-mono">{key === 'triple' ? 850 : key === 'double' ? 920 : 1250} EUR</span>
                             </div>
                           ) : appliedPromoCode === 'SEEYOUINCT' && retreat === 'capetown' ? (
                             <div className="flex items-baseline gap-2">

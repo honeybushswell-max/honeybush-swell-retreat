@@ -130,10 +130,10 @@ export function Dates() {
             <h2 className="text-4xl font-serif text-sand mt-4">Retreat Packages</h2>
             <p className="text-sand text-xl font-light mt-4 italic">Cape Town, South Africa</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="border border-sand/20 p-8 rounded-sm flex flex-col">
               <h3 className="text-2xl font-serif text-honey mb-2">Triple Ocean View Room</h3>
-              <p className="text-3xl font-light mb-6">1550 EUR</p>
+              <p className="text-3xl font-light mb-6">1600 EUR</p>
               <p className="font-light text-sand/80 leading-relaxed mb-8 flex-1">
                 Share a beautiful, spacious oceanfront room with scenic ocean views with two other retreat guests. Three single beds, shared bathroom. Perfect for solo travelers wanting to connect!
               </p>
@@ -160,6 +160,22 @@ export function Dates() {
               <Link to="/book?retreat=capetown&room=double" className="mt-auto">
                 <Button className="w-full bg-honey text-ocean-dark hover:bg-white uppercase tracking-widest text-xs">
                   Select Double Room
+                </Button>
+              </Link>
+            </div>
+            <div className="border border-sand/20 p-8 rounded-sm relative overflow-hidden flex flex-col">
+              <h3 className="text-2xl font-serif text-honey mb-2">Cosy Private Room</h3>
+              <p className="text-3xl font-light mb-6">2000 EUR</p>
+              <p className="font-light text-sand/80 leading-relaxed mb-8 flex-1">
+                A cosy private room featuring an authentic indoor fireplace for ultimate warmth, comfort, privacy, and serene relaxation throughout your stay.
+              </p>
+              <ul className="space-y-3 text-sm font-light text-sand/80 mb-8">
+                <li className="flex items-center gap-2"><span className="text-honey">✓</span> All Cape Town retreat inclusions</li>
+                <li className="flex items-center gap-2"><span className="text-honey">✓</span> Private room with fireplace</li>
+              </ul>
+              <Link to="/book?retreat=capetown&room=private" className="mt-auto">
+                <Button className="w-full bg-honey text-ocean-dark hover:bg-white uppercase tracking-widest text-xs">
+                  Select Private Room
                 </Button>
               </Link>
             </div>

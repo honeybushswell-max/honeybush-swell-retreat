@@ -314,7 +314,7 @@ export function Experience() {
                 Welcome to Carisbrook House – the breathtaking historic home where our Surf & Soul Retreat comes to life. Built around 1870, this is a true heritage gem, full of character, charm, and stories whispered through its high ceilings and original details. Although historic, the house is styled in a light, modern, and relaxed way, creating the perfect blend of old-world soul and contemporary comfort.
               </p>
               <p>
-                We offer two spacious Premium Triple Rooms, each with sweeping ocean views and beautifully high ceilings that make the room feel open, calm, and truly special. For those who prefer something more intimate, we also have two cozy Double Rooms, each with two single beds, located in the quieter part of the house.
+                We offer two spacious Premium Triple Rooms, each with sweeping ocean views and beautifully high ceilings that make the room feel open, calm, and truly special. For those who prefer something more intimate, we also have two cozy Double Rooms, each with two single beds, located in the quieter part of the house, as well as a cosy private room featuring an authentic indoor fireplace.
               </p>
               <p>
                 Step outside onto our beautiful veranda, the heart of the house. From here, you’ll take in the unforgettable views of False Bay, framed by the majestic Hottentots Holland mountains in the distance. Sunrise coffees, ocean breeze, and golden evenings spent here are pure magic.
